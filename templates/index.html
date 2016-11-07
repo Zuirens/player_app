@@ -1,10 +1,99 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en-US">
+
 <head>
-    <meta charset="UTF-8">
-    <title>Zuirens Live Streaming</title>
+	<meta name="viewport" content="initial-scale=1.0,width=device-width,maximum-scale=1" />
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<!--PAGE TITLE-->
+	<title>Zuirens Live</title>
+	<!--GOOGLE FONT CSS-->
+	<link rel='stylesheet' href='http://fonts.googleapis.com/css?family=Open+Sans:300,400,600' type='text/css' media='all' />
+	<link rel='stylesheet' href='http://fonts.googleapis.com/css?family=Six+Caps' type='text/css' media='all' />
+	<!--LOCAL CSS-->
+	<link rel='stylesheet' href="{% static "css/style.css" }" type='text/css' media='all' />
+	<link rel='stylesheet' href="{% static "css/respond.css" }" type='text/css' media='all' />
+	<link rel='stylesheet' href="{% static "font-awesome-4.3.0/css/font-awesome.min.css" }"  type='text/css' media='all' />
 </head>
-<body>
+
+<body class="home page page-template-page-reviews ajax-on">
+	<div id="contentContainer">
+		<!--LOGO-->
+		<a id="logo" href="index.html"><img src="images/logo.png" alt="Zuirens Live" /></a>
+		<!--end logo-->
+		<div id="menu-control"><span></span></div>
+
+		<!--AJAX CONTAINER-->
+		<div id="ajax-content">
+			<!--PAGE INFO FOR UPDATING BODY CLASS AND DOC TITLE-->
+			<div id="page-info" data-page-title="" class="home page page-template-page-reviews ajax-on"></div>
+
+			<!--REVIEWS-->
+			<div id="reviews">
+				<div class="review">
+					<div class="reviewContent">
+						<p>"The acting was good. I also liked the music. But it could have had one or two more car chases if you ask me."</p>
+					</div>
+					<div class="reviewTitle">Hank, First Out The Door Magazine</div>
+				</div>
+				<!--end review-->
+			</div>
+			<!--end reviews-->
+		</div>
+		<!--END AJAX CONTAINER-->
+		<!--SOCIAL ICONS-->
+		<div id="socialIcons"></div>
+		<!--VIDEO-->
+			<div class="dplayer" id="dplayer3"></div>
+		<!--LOADING ANIMATION-->
+		<div id="loading-page"></div>
+		<!--CONTENT COVER-->
+		<div id="contentCover"></div>
+	</div>
+	<!--end contentContainer-->
+	<div id="footerContainer">
+		<div id="footer">
+			<!--CREDITS-->
+			<div id="vys-credits">
+			<!--COPYRIGHT NOTICE-->
+			<div id="copyright">&copy; 2016 Zuirens Live. by <a target="_blank" href="http://www.zuirens.com">Zuirens.com</a></div>
+		</div>
+		<!--end footer-->
+	</div>
+	<!--end footerContainer-->
+	<!--JavaScript-->
+	<script type='text/javascript' src="{% static "plugin/flv.min.js" %}"></script>
+	<script type='text/javascript' src="{% static "plugin/hls.min.js" %}"></script>
+	<script type='text/javascript' src="{% static "scripts/DPlayer.min.js" %}"></script>
+	<script type='text/javascript' src="{% static "scripts/jquery.js" %}"></script>
+	<script type='text/javascript' src="{% static "scripts/core.js" %}"></script>
+	<script type='text/javascript' src="{% static "scripts/transition.js" %}"></script>
+	<script type='text/javascript' src="{% static "scripts/background.js" %}"></script>
+	<script type='text/javascript' src="{% static "scripts/spin.js" %}"></script>
+	<script type='text/javascript' src="{% static "scripts/custom.js" %}"></script>
+	<script type='text/javascript' src="{% static "scripts/retina.js" %}"></script>
+
+	<script>
+	// Live Video (HTTP Live Streaming, M3U8 format) support
+	var dp3 = new DPlayer({
+			element: document.getElementById('dplayer3'),
+			autoplay: false,
+			theme: '#FADFA3',
+			loop: true,
+			screenshot: true,
+			hotkey: true,
+			video: {
+					url: 'http://devtest.qiniudn.com/若能绽放光芒5.m3u8',
+					pic: 'http://devtest.qiniudn.com/若能绽放光芒.png'
+			},
+			danmaku: {
+					id: '9E2E3368B56CDBB42',
+					api: 'https://dplayer.daoapp.io/',
+					token: 'tokendemo',
+					maximum: 3000
+			}
+	});
+	</script>
 
 </body>
+
 </html>
