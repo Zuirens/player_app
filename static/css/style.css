@@ -416,6 +416,9 @@ body.full-screen-video #contentContainer {
     left: 0;
     overflow: hidden;
 }
+.dplayer .dplayer-controller .dplayer-icons .dplayer-comment .dplayer-comment-box .dplayer-comment-input {
+		background: #000 !important;
+}
 
 #headerImages {
     position: absolute;

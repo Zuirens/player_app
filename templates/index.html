@@ -1,4 +1,7 @@
+{% load staticfiles %}
+
 <!DOCTYPE html>
+
 <html lang="en-US">
 
 <head>
@@ -10,15 +13,15 @@
 	<link rel='stylesheet' href='http://fonts.googleapis.com/css?family=Open+Sans:300,400,600' type='text/css' media='all' />
 	<link rel='stylesheet' href='http://fonts.googleapis.com/css?family=Six+Caps' type='text/css' media='all' />
 	<!--LOCAL CSS-->
-	<link rel='stylesheet' href="{% static "css/style.css" }" type='text/css' media='all' />
-	<link rel='stylesheet' href="{% static "css/respond.css" }" type='text/css' media='all' />
-	<link rel='stylesheet' href="{% static "font-awesome-4.3.0/css/font-awesome.min.css" }"  type='text/css' media='all' />
+	<link rel='stylesheet' href="{% static "css/style.css" %}">
+	<link rel='stylesheet' href="{% static "css/respond.css" %}">
+	<link rel='stylesheet' href="{% static "font-awesome-4.3.0/css/font-awesome.min.css" %}">
 </head>
 
 <body class="home page page-template-page-reviews ajax-on">
 	<div id="contentContainer">
 		<!--LOGO-->
-		<a id="logo" href="index.html"><img src="images/logo.png" alt="Zuirens Live" /></a>
+		<a id="logo" href="index.html"><img src="{% static "images/logo.png" %}" alt="Zuirens Live" /></a>
 		<!--end logo-->
 		<div id="menu-control"><span></span></div>
 
@@ -79,7 +82,8 @@
 			autoplay: false,
 			theme: '#FADFA3',
 			loop: true,
-			screenshot: true,
+      lang: 'en',
+			screenshot: false,
 			hotkey: true,
 			video: {
 					url: 'http://devtest.qiniudn.com/若能绽放光芒5.m3u8',
