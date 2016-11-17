@@ -21,7 +21,7 @@
 <body class="home page page-template-page-reviews ajax-on">
 	<div id="contentContainer">
 		<!--LOGO-->
-		<a id="logo" href="index.html"><img src="{% static "images/logo.png" %}" alt="Zuirens Live" /></a>
+		<a id="logo" href="/"><img src="{% static "images/logo.png" %}" alt="Zuirens Live" /></a>
 		<!--end logo-->
 		<div id="menu-control"><span></span></div>
 
@@ -80,14 +80,15 @@
 	// Live Video (HTTP Live Streaming, M3U8 format) support
 	var dp3 = new DPlayer({
 			element: document.getElementById('dplayer3'),
-			autoplay: false,
+			autoplay: true,
 			theme: '#FADFA3',
 			loop: true,
       lang: 'en',
 			screenshot: false,
 			hotkey: true,
 			video: {
-					url: 'http://devtest.qiniudn.com/若能绽放光芒5.m3u8',
+                    url: 'https://video-edge-5595f4.lax01.hls.ttvnw.net/transcode-x2-a0c2e9/chiao622_23677105856_548490006/medium/index-live.m3u8?token=id=8031324021729688514,bid=23677105856,exp=1479417080,node=video-edge-5595f4.lax01,nname=video-edge-5595f4.lax01,proto=https,fmt=medium&sig=15bd4a81aa69128197eb0ddfe48858a1445644a3',
+{#					url: 'http://devtest.qiniudn.com/若能绽放光芒5.m3u8',#}
 					pic: 'http://devtest.qiniudn.com/若能绽放光芒.png'
 			},
 			danmaku: {
