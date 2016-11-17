@@ -1,1 +1,1 @@
-# player_app
+# stream_app

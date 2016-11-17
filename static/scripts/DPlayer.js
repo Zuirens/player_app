@@ -99,9 +99,9 @@
                         c = function (e) {
                             return "en" === a.option.lang ? e : "zh" === a.option.lang ? m[e] : void 0
                         };
-                    // this.updateBar = function (e, t, a) {
-                    //     t = t > 0 ? t : 0, t = t < 1 ? t : 1, Y[e + "Bar"].style[a] = 100 * t + "%"
-                    // };
+                    this.updateBar = function (e, t, a) {
+                        t = t > 0 ? t : 0, t = t < 1 ? t : 1, Y[e + "Bar"].style[a] = 100 * t + "%"
+                    };
                     var y = ["play", "pause", "canplay", "playing", "ended", "error"];
                     this.event = {};
                     for (var u = 0; u < y.length; u++) this.event[y[u]] = [];
@@ -202,14 +202,14 @@
                     //     var n = (t.clientX - w(E)) / L;
                     //     n = n > 0 ? n : 0, n = n < 1 ? n : 1, a.updateBar("played", n, "width"), a.video.currentTime = parseFloat(Y.playedBar.style.width) / 100 * a.video.duration
                     // });
-                    var N = function (e) {
-                            var t = e || window.event,
-                                n = (t.clientX - w(E)) / L;
-                            n = n > 0 ? n : 0, n = n < 1 ? n : 1, a.updateBar("played", n, "width"), a.element.getElementsByClassName("dplayer-ptime")[0].innerHTML = k(n * a.video.duration)
-                        },
-                        M = function we() {
-                            document.removeEventListener("mouseup", we), document.removeEventListener("mousemove", N), a.video.currentTime = parseFloat(Y.playedBar.style.width) / 100 * a.video.duration, a.setTime()
-                        };
+                    // var N = function (e) {
+                    //         var t = e || window.event,
+                    //             n = (t.clientX - w(E)) / L;
+                    //         n = n > 0 ? n : 0, n = n < 1 ? n : 1, a.updateBar("played", n, "width"), a.element.getElementsByClassName("dplayer-ptime")[0].innerHTML = k(n * a.video.duration)
+                    //     },
+                    //     M = function we() {
+                    //         document.removeEventListener("mouseup", we), document.removeEventListener("mousemove", N), a.video.currentTime = parseFloat(Y.playedBar.style.width) / 100 * a.video.duration, a.setTime()
+                    //     };
                     // E.addEventListener("mousedown", function () {
                     //     L = E.clientWidth, a.clearTime(), document.addEventListener("mousemove", N), document.addEventListener("mouseup", M)
                     // }), 
@@ -232,13 +232,15 @@
                             document.removeEventListener("mouseup", Ye), document.removeEventListener("mousemove", R), q.classList.remove("dplayer-volume-active")
                         };
                     S.addEventListener("click", function (e) {
-                        console.log('volume:S')
+                        // console.log('S(dplayer-volume-bar-wrap) click listener')
                         var t = e || window.event,
                             n = (t.clientX - w(A) - 5.5) / I;
                         a.volume(n)
                     }), S.addEventListener("mousedown", function () {
+                        // console.log('S(dplayer-volume-bar-wrap) mousedown listener')
                         document.addEventListener("mousemove", R), document.addEventListener("mouseup", H), q.classList.add("dplayer-volume-active")
                     }), D.addEventListener("click", function () {
+                        // console.log('D(dplayer-volume-icon) click listener')
                         a.video.muted ? (a.video.muted = !1, a.switchVolumeIcon(), a.updateBar("volume", a.video.volume, "width")) : (a.video.muted = !0, D.innerHTML = a.getSVG("volume-off"), a.updateBar("volume", 0, "width"))
                     });
                     var F = 0;
@@ -547,7 +549,7 @@
                 }, {
                     key: "volume",
                     value: function (e) {
-                        e = e > 0 ? e : 0, e = e < 1 ? e : 1, /*this.updateBar("volume", e, "width"),*/ this.video.volume = e, this.video.muted && (this.video.muted = !1), this.switchVolumeIcon()
+                        e = e > 0 ? e : 0, e = e < 1 ? e : 1, this.updateBar("volume", e, "width"), this.video.volume = e, this.video.muted && (this.video.muted = !1), this.switchVolumeIcon()
                     }
                 }, {
                     key: "toggle",

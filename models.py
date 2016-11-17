@@ -22,6 +22,7 @@ class AnonyVisitor(models.Model):
 
 
 class Message(models.Model):
+    uid = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
     author = models.ForeignKey(AuthenUser, on_delete=models.CASCADE)
     content = models.CharField(max_length=255)
     recieved_time = models.DateTimeField(auto_now_add=True)
