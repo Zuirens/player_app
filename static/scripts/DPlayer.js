@@ -275,7 +275,7 @@
                         // };
                     j.addEventListener("click", function () {
                         G()
-                    }), 
+                    }); 
                     // O.addEventListener("click", function () {
                         // W()
                     // });
