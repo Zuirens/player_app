@@ -63,8 +63,8 @@
 
 			<div id="footerMenuContainer" class="menu-footer-container">
 				<ul id="footerMenu" class="menu">
-					<li class="online"><i class="fa fa-circle" aria-hidden="true"></i><span>1,000</span></li>
-					<li><i class="fa fa-eye" aria-hidden="true"></i><span>5,600</span></li>
+					<li class="online" id="rv"><i class="fa fa-circle" aria-hidden="true"></i><span>1,000</span></li>
+					<li id="tv"><i class="fa fa-eye" aria-hidden="true"></i><span>5,600</span></li>
 				</ul>
 			</div>
 			<!--COPYRIGHT NOTICE-->
@@ -102,16 +102,14 @@
                         pic: '{{ cm.thumbnail }}'
                 },
                 danmaku: {
-                        id: '9E2E3368B56CDBB42',
-                        api: 'https://api.prprpr.me/dplayer/',
-                        token: 'tokendemo',
-                        maximum: 3000
+                        id: '',
+                        api: '',
+                        token: '',
+                        maximum: 100
                 }
 	        });
     if(is_authen) {
         var text = liveApp.parseJSON('{{ au_user.extra_data }}');
-{#        var text = jQuery.parseJSON(jQuery.parseHTML('{{ au_user.extra_data }}')[0].data);#}
-        console.log(text);
 
     }
 	</script>

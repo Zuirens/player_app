@@ -15,6 +15,9 @@ class AuthenUser(models.Model):
     extra_data = models.TextField(blank=True)
     is_blacklist = models.BooleanField(default=False)
 
+    def __str__(self):
+        return '{}'.format(self.user.username)
+
     class Meta:
         verbose_name = _('AUTHEN-USER')
         verbose_name_plural = verbose_name
