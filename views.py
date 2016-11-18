@@ -2,7 +2,7 @@ from rest_framework.renderers import JSONRenderer
 from django.http import HttpResponse
 from django.shortcuts import render
 from django.views import View
-from .models import ControlMeta, Message
+from .models import ControlMeta, Message, AuthenUser
 from django.contrib.auth.models import User
 from time import time
 from django.db.models import Max
@@ -48,7 +48,7 @@ class LiveApiView(View):
             tstp = request.GET.get('tstp', '-1')
             try: ic = Message.objects.get(uid=icmt).id
             except: ic = -1
-            print(icmt, ic)
+            # print(icmt, ic)
             lastcmt = Message.objects.latest('pk')
             imax = lastcmt.id
             lcmt = []
@@ -74,13 +74,24 @@ class LiveApiView(View):
             except: pass
 
             return JSONResponse(data)
+        else: pass
 
         return JSONResponse({'icmt': -1, 'tstp': -1})
 
     def post(self, request, *args, **kwargs):
         if request.is_ajax():
-            pass
-        return JSONResponse({'icmt': -1, 'tstp': -1})
+            try:
+                body = request.POST.get('body')
+                au_uid = request.POST.get('author')
+                msg = Message(author = AuthenUser.objects.get(uid=au_uid), content=body)
+                msg.full_clean()
+                msg.save()
+                return JSONResponse({'ec': 1})
+            except:
+                return JSONResponse({'ec': -1})
+
+
+        return JSONResponse({'ec': 0})
 
 
 

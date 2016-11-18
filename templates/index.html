@@ -87,7 +87,7 @@
 	// Live Video (HTTP Live Streaming, M3U8 format) support
 
         var src = '{{ cm.is_start|yesno }}' == 'yes' ? '{{ cm.stream_source }}' : '',
-            is_authen = '{{ user.is_authenticated|yesno }}' == 'yes',
+            id = '{{ user.is_authenticated|yesno }}' == 'yes' ? '{{ au_user.uid }}' : 'visitor',
 
             dp3 = new DPlayer({
                 element: document.getElementById('dplayer3'),
@@ -102,16 +102,15 @@
                         pic: '{{ cm.thumbnail }}'
                 },
                 danmaku: {
-                        id: '',
-                        api: '',
-                        token: '',
-                        maximum: 100
+                        id: id,
+                        api: '/api/'
                 }
 	        });
-    if(is_authen) {
-        var text = liveApp.parseJSON('{{ au_user.extra_data }}');
-
-    }
+        liveApp.init(id);
+{#    if(is_authen) {#}
+{#        var text = liveApp.parseJSON('{{ au_user.extra_data }}');#}
+{##}
+{#    }#}
 	</script>
 
 	<script>

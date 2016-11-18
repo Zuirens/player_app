@@ -38,7 +38,7 @@
                     return a && e(t.prototype, a), n && e(t, n), t
                 }
             }();
-        console.log("\n %c DPlayer 1.1.2 %c http://dplayer.js.org \n\n", "color: #fadfa3; background: #030307; padding:5px 0;", "background: #fadfa3; padding:5px 0;"), a(1);
+        console.log("\n %c DPlayer 1.1.2.8 %c http://dplayer.js.org \n\n", "color: #fadfa3; background: #030307; padding:5px 0;", "background: #fadfa3; padding:5px 0;"), a(1);
         var o = a(5),
             i = 0,
             s = function () {
@@ -354,7 +354,7 @@
                     //     1 !== a.video.duration && (a.element.getElementsByClassName("dplayer-dtime")[0].innerHTML = k(a.video.duration))
                     // }), 
                     this.video.addEventListener("progress", function () {
-                        console.log('progress');
+                        // console.log('progress');
                         var e = a.video.buffered.length ? a.video.buffered.end(a.video.buffered.length - 1) / a.video.duration : 0;
                         // a.updateBar("loaded", e, "width")
                     }), this.video.addEventListener("error", function () {
@@ -436,17 +436,18 @@
                             return e.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#x27;").replace(/\//g, "&#x2f;")
                         },
                         ye = function () {
-                            if (oe.blur(), !oe.value.replace(/^\s+|\s+$/g, "")) return void alert(c("Please input message!"));
+                            var text = oe.value.replace(/^\s+|\s+$/g, "");
+                            if (oe.blur(), !text) {
+                                // return void alert(c("Please input message!"));
+                            }
                             var e = {
-                                token: a.option.danmaku.token,
-                                player: a.option.danmaku.id,
-                                author: "zuirens",
-                                time: a.video.currentTime,
-                                // text: oe.value,
+                                author: a.option.danmaku.id,
+                                // time: a.video.currentTime,
+                                body: text,
                                 // color: '',// a.element.querySelector(".dplayer-comment-setting-color input:checked").value,
                                 // type: ''// a.element.querySelector(".dplayer-comment-setting-type input:checked").value
                             };
-                            liveApp.postCmt(a.option.danmaku.api, e);
+                            liveApp.pCmt(a.option.danmaku.api, e);
                             // a.option.apiBackend.send(a.option.danmaku.api, e), 
                             oe.value = "", ve()/*, a.dan.splice(a.danIndex, 0, e), a.danIndex++*/;
                             // var t = le(ce(e.text), e.color, e.type);
