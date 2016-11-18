@@ -121,7 +121,7 @@
                             var e = new Hls;
                             e.attachMedia(a.video), e.on(Hls.Events.MEDIA_ATTACHED, function () {
                                 e.loadSource(a.option.video.url), e.on(Hls.Events.MANIFEST_PARSED, function (e, t) {
-                                    console.log("manifest loaded, found " + t.levels.length + " quality level")
+                                    // console.log("manifest loaded, found " + t.levels.length + " quality level")
                                 })
                             })
                         }(), /(flv\?|flv$)/i.exec(this.option.video.url) && flvjs.isSupported()) {
@@ -171,7 +171,7 @@
                     var E = this.element.getElementsByClassName("dplayer-bar-wrap")[0],
                         L = void 0;
                     this.option.danmaku && this.video.addEventListener("seeking", function () {
-                        console.log('a.dan?');
+                        // console.log('a.dan');
                         // for (var e = 0; e < a.dan.length; e++) {
                         //     if (a.dan[e].time >= a.video.currentTime) return void(a.danIndex = e);
                         //     a.danIndex = a.dan.length
@@ -182,7 +182,7 @@
                         C = !1,
                         T = void 0;
                     this.setTime = function () {
-                        console.log('setTime?')
+                        // console.log('setTime?')
                         a.playedTime = setInterval(function () {
                             // B = a.video.currentTime, !C && B < z + .01 && !a.video.paused && (a.element.classList.add("dplayer-loading"), C = !0), C && B > z + .01 && !a.video.paused && (a.element.classList.remove("dplayer-loading"), C = !1), z = B, a.updateBar("played", a.video.currentTime / a.video.duration, "width"), a.element.getElementsByClassName("dplayer-ptime")[0].innerHTML = k(a.video.currentTime), a.trigger("playing")
                         }, 100),
@@ -193,7 +193,7 @@
                         // console.log(a.danIndex)
                     }, 
                     this.clearTime = function () {
-                        console.log('clearTime?')
+                        // console.log('clearTime?')
                         clearInterval(a.playedTime), a.option.danmaku && clearInterval(T)
                     }; 
                     // E.addEventListener("click", function (e) {
@@ -279,7 +279,7 @@
                     // O.addEventListener("click", function () {
                         // W()
                     // });
-                    console.log(this.option.loop);
+                    // console.log(this.option.loop);
                     var J = this.option.loop,
                         _ = this.element.getElementsByClassName("dplayer-danmaku")[0],
                         Q = !0;
@@ -354,7 +354,7 @@
                     //     1 !== a.video.duration && (a.element.getElementsByClassName("dplayer-dtime")[0].innerHTML = k(a.video.duration))
                     // }), 
                     this.video.addEventListener("progress", function () {
-                        console.log('progress?');
+                        console.log('progress');
                         var e = a.video.buffered.length ? a.video.buffered.end(a.video.buffered.length - 1) / a.video.duration : 0;
                         // a.updateBar("loaded", e, "width")
                     }), this.video.addEventListener("error", function () {
@@ -585,8 +585,8 @@
                             a = void 0;
                         a = this.option.danmaku.maximum ? this.option.danmaku.api + "?id=" + this.option.danmaku.id + "&max=" + this.option.danmaku.maximum : this.option.danmaku.api + "?id=" + this.option.danmaku.id;
                         var n = (this.option.danmaku.addition || []).slice(0);
-                        console.log(a);
-                        console.log(n);
+                        // console.log(a);
+                        // console.log(n);
                         n.push(a),
                         this._readAllEndpoints(n, function (a) {
                             e.danIndex = 0, e.dan = [].concat.apply([], a).sort(function (e, t) {
@@ -805,7 +805,7 @@
             value: !0
         });
         t.send = function (e, t) {
-            console.log('send!');
+            console.log('send');
             var a = new XMLHttpRequest;
             a.onreadystatechange = function () {
                 if (4 === a.readyState)
@@ -815,7 +815,7 @@
                     } else console.log("Request was unsuccessful: " + a.status)
             }, a.open("post", e, !0), a.send(JSON.stringify(t)), console.log(JSON.stringify(t));
         }, t.read = function (e, t) {
-            console.log('read!')
+            console.log('read')
             var a = new XMLHttpRequest;
             a.onreadystatechange = function () {
                 if (4 === a.readyState) {
