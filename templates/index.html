@@ -36,7 +36,7 @@
 					<div class="reviewContent">
 						<p>"The acting was good. I also liked the music. But it could have had one or two more car chases if you ask me."</p>
 					</div>
-					<div class="reviewTitle">Hank, First Out The Door Magazine</div>
+					<div class="reviewTitle"></div>
 				</div>
 				<!--end review-->
 			</div>
@@ -56,7 +56,7 @@
 	<div id="footerContainer">
 		<div id="footer">
 			<!--CREDITS-->
-			<div id="vys-credits">
+			<div id="vys-credits"></div>
 			<!--COPYRIGHT NOTICE-->
 			<div id="copyright">&copy; 2016 Zuirens Live. by <a target="_blank" href="http://www.zuirens.com">Zuirens.com</a></div>
 		</div>
@@ -64,11 +64,12 @@
 	</div>
 	<!--end footerContainer-->
 	<!--JavaScript-->
+    <script type='text/javascript' src="{% static "scripts/jquery.js" %}"></script>
+    	<script type='text/javascript' src="{% static "scripts/DPlayer.js" %}"></script>
+
     <script type="text/javascript" src="{% static "src/app.js" %}"></script>
 	<script type='text/javascript' src="{% static "plugin/flv.min.js" %}"></script>
 	<script type='text/javascript' src="{% static "plugin/hls.min.js" %}"></script>
-	<script type='text/javascript' src="{% static "scripts/DPlayer.js" %}"></script>
-	<script type='text/javascript' src="{% static "scripts/jquery.js" %}"></script>
 	<script type='text/javascript' src="{% static "scripts/core.js" %}"></script>
 	<script type='text/javascript' src="{% static "scripts/transition.js" %}"></script>
 	<script type='text/javascript' src="{% static "scripts/background.js" %}"></script>
@@ -77,30 +78,31 @@
 	<script type='text/javascript' src="{% static "scripts/retina.js" %}"></script>
 
 	<script>
-
 	// Live Video (HTTP Live Streaming, M3U8 format) support
-	var dp3 = new DPlayer({
-			element: document.getElementById('dplayer3'),
-			autoplay: true,
-			theme: '#FADFA3',
-			loop: true,
-      lang: 'zh',
-			screenshot: false,
-			hotkey: true,
-			video: {
-                    url: 'https://video-edge-5594f8.lax01.hls.ttvnw.net/transcode-907772/hyper2374_23682575568_548831863/medium/index-live.m3u8?token=id=5531793904224539367,bid=23682575568,exp=1479448746,node=video-edge-5594f8.lax01,nname=video-edge-5594f8.lax01,proto=https,fmt=medium&sig=d91b9cb37f84dc1672ba1e9a9014bd2e1507066e',
-                    pic: 'https://headquarter2012.files.wordpress.com/2012/02/ill-be-back.jpg'
-                {#					url: 'http://devtest.qiniudn.com/若能绽放光芒5.m3u8',#}
-{#					pic: 'http://devtest.qiniudn.com/若能绽放光芒.png'#}
-			},
-			danmaku: {
-					id: '9E2E3368B56CDBB42',
-					api: 'https://api.prprpr.me/dplayer/',
-					token: 'tokendemo',
-					maximum: 3000
-			}
-	});
-        console.log('{{ user.is_authenticated|yesno }}');
+
+        var src = '{{ cm.is_start|yesno }}' == 'yes' ? '{{ cm.stream_source }}' : '',
+            dp3 = new DPlayer({
+                element: document.getElementById('dplayer3'),
+                autoplay: true,
+                theme: '#FADFA3',
+                loop: true,
+                lang: 'zh',
+                screenshot: false,
+                hotkey: true,
+                video: {
+                        url: src,
+                        pic: '{{ cm.thumbnail }}'
+                },
+                danmaku: {
+                        id: '9E2E3368B56CDBB42',
+                        api: 'https://api.prprpr.me/dplayer/',
+                        token: 'tokendemo',
+                        maximum: 3000
+                }
+	        });
+    var text = jQuery.parseJSON(jQuery.parseHTML('{{ au_user.extra_data }}')[0].data);
+    console.log(src);
+    console.log(text);
 	</script>
 
 </body>

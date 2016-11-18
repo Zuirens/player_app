@@ -446,7 +446,7 @@
                                 // color: '',// a.element.querySelector(".dplayer-comment-setting-color input:checked").value,
                                 // type: ''// a.element.querySelector(".dplayer-comment-setting-type input:checked").value
                             };
-                            zxcv(a.option.danmaku.api, e);
+                            liveApp.postCmt(a.option.danmaku.api, e);
                             // a.option.apiBackend.send(a.option.danmaku.api, e), 
                             oe.value = "", ve()/*, a.dan.splice(a.danIndex, 0, e), a.danIndex++*/;
                             // var t = le(ce(e.text), e.color, e.type);
@@ -470,6 +470,7 @@
                     j.addEventListener("click", function () {
                         ve()
                     }), ie.addEventListener("click", function () {
+                        console.log('dplayer-comment-icon click');
                         he(), setTimeout(function () {
                             oe.focus()
                         }, 300)

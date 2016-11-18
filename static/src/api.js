@@ -5,7 +5,6 @@ export const send = (endpoint, danmakuData) => {
       if (xhr.status >= 200 && xhr.status < 300 || xhr.status === 304) {
         const response = JSON.parse(xhr.responseText);
         if (response.code !== 1) {
-          console.log('what')
           alert(response.msg);
         }
         else {
