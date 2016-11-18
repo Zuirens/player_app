@@ -7,8 +7,16 @@
 <head>
 	<meta name="viewport" content="initial-scale=1.0,width=device-width,maximum-scale=1" />
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<meta name="description" content="ANDROGYNY XXX PARTY 感受×窺視 FEEL YOUR DESIRES">
 	<!--PAGE TITLE-->
 	<title>Zuirens Live</title>
+	<!--You can use open graph tags to customize link previews-->
+	<meta property="og:url"           content="http://live.zuirens.com" />
+	<meta property="og:type"          content="website" />
+	<meta property="og:title"         content="Zuirens Live" />
+	<meta property="og:description"   content="ANDROGYNY XXX PARTY 感受×窺視 FEEL YOUR DESIRES" />
+	<meta property="og:image"         content="" />
+</head>
 	<!--GOOGLE FONT CSS-->
 	<link rel='stylesheet' href='http://fonts.googleapis.com/css?family=Open+Sans:300,400,600' type='text/css' media='all' />
 	<link rel='stylesheet' href='http://fonts.googleapis.com/css?family=Six+Caps' type='text/css' media='all' />
@@ -18,17 +26,19 @@
 	<link rel='stylesheet' href="{% static "font-awesome-4.3.0/css/font-awesome.min.css" %}">
 </head>
 
-<body class="home page page-template-page-reviews ajax-on">
+<body class="home page">
 	<div id="contentContainer">
 		<!--LOGO-->
 		<a id="logo" href="/"><img src="{% static "images/logo.png" %}" alt="Zuirens Live" /></a>
 		<!--end logo-->
-		<div id="menu-control"><span></span></div>
+		<div id="fblike">
+<div class="fb-like" data-href="https://live.zuirens.com" data-layout="button_count" data-action="recommend" data-size="small" data-show-faces="true" data-share="true"></div>
+		</div>
+		{# <div id="menu-control"><span></span></div> #}
 
-		<!--AJAX CONTAINER-->
 		<div id="ajax-content">
 			<!--PAGE INFO FOR UPDATING BODY CLASS AND DOC TITLE-->
-			<div id="page-info" data-page-title="" class="home page page-template-page-reviews ajax-on"></div>
+			<div id="page-info" data-page-title="" class="home page"></div>
 
 			<!--REVIEWS-->
 			<div id="reviews">
@@ -36,15 +46,12 @@
 					<div class="reviewContent">
 						<p>"The acting was good. I also liked the music. But it could have had one or two more car chases if you ask me."</p>
 					</div>
-					<div class="reviewTitle"></div>
+					<div class="reviewTitle">Andy</div>
 				</div>
 				<!--end review-->
 			</div>
 			<!--end reviews-->
 		</div>
-		<!--END AJAX CONTAINER-->
-		<!--SOCIAL ICONS-->
-		<div id="socialIcons"></div>
 		<!--VIDEO-->
 			<div class="dplayer" id="dplayer3"></div>
 		<!--LOADING ANIMATION-->
@@ -56,26 +63,34 @@
 	<div id="footerContainer">
 		<div id="footer">
 			<!--CREDITS-->
-			<div id="vys-credits"></div>
+			<div id="zs-credits">
+
+			</div>
+
+			<div id="footerMenuContainer" class="menu-footer-container">
+				<ul id="footerMenu" class="menu">
+					<li class="online"><i class="fa fa-circle" aria-hidden="true"></i><span>1,000</span></li>
+					<li><i class="fa fa-eye" aria-hidden="true"></i><span>5,600</span></li>
+				</ul>
+			</div>
 			<!--COPYRIGHT NOTICE-->
-			<div id="copyright">&copy; 2016 Zuirens Live. by <a target="_blank" href="http://www.zuirens.com">Zuirens.com</a></div>
+			<div id="copyright">&copy; 2016 Zuirens Live. by <a target="_blank" href="http://www.facebook.com/zuirens">Zuirens</a></div>
 		</div>
 		<!--end footer-->
 	</div>
 	<!--end footerContainer-->
 	<!--JavaScript-->
     <script type='text/javascript' src="{% static "scripts/jquery.js" %}"></script>
-    	<script type='text/javascript' src="{% static "scripts/DPlayer.js" %}"></script>
+    <script type='text/javascript' src="{% static "scripts/DPlayer.js" %}"></script>
+	  <script type="text/javascript" src="{% static "src/app.js" %}"></script>
+		<script type='text/javascript' src="{% static "plugin/flv.min.js" %}"></script>
+		<script type='text/javascript' src="{% static "plugin/hls.min.js" %}"></script>
+		<script type='text/javascript' src="{% static "scripts/core.js" %}"></script>
+		<script type='text/javascript' src="{% static "scripts/background.js" %}"></script>
+		<script type='text/javascript' src="{% static "scripts/spin.js" %}"></script>
+		<script type='text/javascript' src="{% static "scripts/custom.js" %}"></script>
+		<script type='text/javascript' src="{% static "scripts/retina.js" %}"></script>
 
-    <script type="text/javascript" src="{% static "src/app.js" %}"></script>
-	<script type='text/javascript' src="{% static "plugin/flv.min.js" %}"></script>
-	<script type='text/javascript' src="{% static "plugin/hls.min.js" %}"></script>
-	<script type='text/javascript' src="{% static "scripts/core.js" %}"></script>
-	<script type='text/javascript' src="{% static "scripts/transition.js" %}"></script>
-	<script type='text/javascript' src="{% static "scripts/background.js" %}"></script>
-	<script type='text/javascript' src="{% static "scripts/spin.js" %}"></script>
-	<script type='text/javascript' src="{% static "scripts/custom.js" %}"></script>
-	<script type='text/javascript' src="{% static "scripts/retina.js" %}"></script>
 
 	<script>
 	// Live Video (HTTP Live Streaming, M3U8 format) support
@@ -109,6 +124,26 @@
 
     }
 	</script>
+
+	<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-1718206-52', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+var js, fjs = d.getElementsByTagName(s)[0];
+if (d.getElementById(id)) return;
+js = d.createElement(s); js.id = id;
+js.src = "//connect.facebook.net/zh_TW/sdk.js#xfbml=1&version=v2.8&appId=1401988986704362";
+fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
 
 </body>
 

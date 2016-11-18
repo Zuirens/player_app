@@ -492,6 +492,13 @@ body.single #headerImages:after, body.page-template-default #headerImages:after,
 
 
 /*-----------------------------------*/
+#fblike {
+  position: absolute;
+  right: 30px;
+  top:25px;
+  z-index: 101;
+}
+
 
 #menu-control {
     color: #fff;
@@ -1066,7 +1073,7 @@ body.mobile-device #audioControl {
 #reviews {
     position: absolute;
     right: 30px;
-    bottom: 80px;
+    bottom: 100px;
     max-width: 100%;
     z-index: 98;
     color: rgba(255, 255, 255, .9);
@@ -2707,6 +2714,11 @@ body.mobile-device #footerContainer {
     margin-left: 15px;
 }
 
+#footerMenu li.online {
+    color: #ff0000;
+}
+
+
 #footerMenu li a {
     border-bottom: 0px solid transparent;
     color: #999;
@@ -2717,6 +2729,10 @@ body.mobile-device #footerContainer {
     border-bottom-color: #fff;
     color: #fff;
 }
+#footerMenu span {
+    padding-left: 10px;
+}
+
 
 
 /*--------------------------*/
@@ -2727,14 +2743,14 @@ body.mobile-device #footerContainer {
 
 /*------------------------*/
 
-#vys-credits {
+#zs-credits {
     text-align: center;
     width: 80%;
     margin: 10px auto 40px;
     max-width: 1000px;
 }
 
-#vys-credits span {
+#zs-credits span {
     display: inline-block;
     line-height: 1em;
     margin: 0 3px;
@@ -2748,11 +2764,11 @@ body.mobile-device #footerContainer {
     font-size: 28px;
 }
 
-#vys-credits span:hover {
+#zs-credits span:hover {
     color: #fff;
 }
 
-#vys-credits small {
+#zs-credits small {
     opacity: .8;
 }
 
