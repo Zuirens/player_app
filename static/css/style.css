@@ -380,7 +380,7 @@ body.full-screen-video #contentContainer {
     z-index: 100;
     position: relative;
     border: none;
-    max-width: 100%;
+    max-width: 100px;
     margin: 20px 0 0 30px;
     outline: none;
     font-size: 200%;
@@ -2712,6 +2712,7 @@ body.mobile-device #footerContainer {
 #footerMenu li {
     display: inline-block;
     margin-left: 15px;
+    font-size: 14px;
 }
 
 #footerMenu li.online {
