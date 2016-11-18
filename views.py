@@ -5,6 +5,7 @@ from django.views import View
 from .models import ControlMeta, Message
 from django.contrib.auth.models import User
 from time import time
+from django.db.models import Max
 import base64
 import re
 import json
@@ -21,6 +22,7 @@ class JSONResponse(HttpResponse):
 
 
 class LiveApiView(View):
+    MAX_CMT_NUM = 10
 
     def parseCmt(self, msg_model):
         msg = {}
@@ -44,14 +46,27 @@ class LiveApiView(View):
             data = {}
             icmt = request.GET.get('icmt', '-1')
             tstp = request.GET.get('tstp', '-1')
-            # print(icmt, tstp)
-            cmt = Message.objects.all().order_by('recieved_time')
+            try: ic = Message.objects.get(uid=icmt).id
+            except: ic = -1
+            print(icmt, ic)
+            lastcmt = Message.objects.latest('pk')
+            imax = lastcmt.id
             lcmt = []
-            for m in cmt:
-                lcmt.append(self.parseCmt(m))
-            data['lcmt'] = lcmt
+            if ic > 0:
+                if ic < imax:
+                    cmt = Message.objects.filter(id__gt = ic)[:LiveApiView.MAX_CMT_NUM]
+                    for m in cmt:
+                        lcmt.append(self.parseCmt(m))
+                    data['lcmt'] = lcmt
+                    data['icmt'] = cmt[len(cmt)-1].uid
+                else: data['icmt'] = lastcmt.uid
+            else:
+                cmt = Message.objects.order_by('-id')[:LiveApiView.MAX_CMT_NUM].reverse()
+                for m in cmt:
+                    lcmt.append(self.parseCmt(m))
+                data['lcmt'] = lcmt
+                data['icmt'] = cmt[len(cmt) - 1].uid
             data['tstp'] = int(time())
-            data['icmt'] = cmt.latest('recieved_time').uid
             data['rv'], data['tv'] = 0, 0
             data['st'] = False
             try:
@@ -60,12 +75,12 @@ class LiveApiView(View):
 
             return JSONResponse(data)
 
-        return JSONResponse({'comment_id': -1, 'timestamp': -1})
+        return JSONResponse({'icmt': -1, 'tstp': -1})
 
     def post(self, request, *args, **kwargs):
         if request.is_ajax():
             pass
-        return JSONResponse({'comment_id': -1, 'timestamp': -1})
+        return JSONResponse({'icmt': -1, 'tstp': -1})
 
 
 
