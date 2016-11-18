@@ -358,7 +358,7 @@
                         var e = a.video.buffered.length ? a.video.buffered.end(a.video.buffered.length - 1) / a.video.duration : 0;
                         // a.updateBar("loaded", e, "width")
                     }), this.video.addEventListener("error", function () {
-                        a.element.getElementsByClassName("dplayer-ptime")[0].innerHTML = "Error happens ╥﹏╥", a.trigger("pause")
+                        a.element.getElementsByClassName("dplayer-ptime")[0].innerHTML = "coming soon", a.trigger("pause")
                     }), this.video.addEventListener("canplay", function () {
                         a.trigger("canplay")
                     }), this.ended = !1, this.video.addEventListener("ended", function () {
