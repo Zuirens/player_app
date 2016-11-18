@@ -29,11 +29,15 @@ var liveApp = (function () {
     init = (function () {
             gCmt();
         })();
-
+    
+    parseJSON = function (string) {
+        return jQuery.parseJSON(jQuery.parseHTML(string)[0].data);
+    };
 
     return {
         pCmt: pCmt,
-        gCmt: gCmt
+        gCmt: gCmt,
+        parseJSON: parseJSON
     }
 
 })();

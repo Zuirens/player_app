@@ -81,6 +81,8 @@
 	// Live Video (HTTP Live Streaming, M3U8 format) support
 
         var src = '{{ cm.is_start|yesno }}' == 'yes' ? '{{ cm.stream_source }}' : '',
+            is_authen = '{{ user.is_authenticated|yesno }}' == 'yes',
+
             dp3 = new DPlayer({
                 element: document.getElementById('dplayer3'),
                 autoplay: true,
@@ -100,9 +102,12 @@
                         maximum: 3000
                 }
 	        });
-    var text = jQuery.parseJSON(jQuery.parseHTML('{{ au_user.extra_data }}')[0].data);
-    console.log(src);
-    console.log(text);
+    if(is_authen) {
+        var text = liveApp.parseJSON('{{ au_user.extra_data }}');
+{#        var text = jQuery.parseJSON(jQuery.parseHTML('{{ au_user.extra_data }}')[0].data);#}
+        console.log(text);
+
+    }
 	</script>
 
 </body>
