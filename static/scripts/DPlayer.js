@@ -471,6 +471,7 @@
                     j.addEventListener("click", function () {
                         ve()
                     }), ie.addEventListener("click", function () {
+                        if(!liveApp.checkLogin()) { return }
                         console.log('dplayer-comment-icon click');
                         he(), setTimeout(function () {
                             oe.focus()

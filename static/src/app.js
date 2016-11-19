@@ -11,13 +11,14 @@ var liveApp = (function () {
         csrftoken;
 
     showCmt = function (s) {
-        if(!globalStart) { return; }
+        if (!globalStart) {
+            return;
+        }
         if (!s) {
-            // console.log(au_id);
+            cmtbox.fadeOut(1000);
             if (lcmt.length > 0) {
-                var cmt = lcmt.shift(), au = parseJSON(cmt['au']['exd']);
-                // console.log(cmt['au']['uid']);
-                cmtbox.html(au + ':' + cmt['body']);
+                var cmt = lcmt.shift(), au = cmt['au'];
+                cmtbox.html("\<blockquote\>" + cmt['body'] + "\<cite\>\<a href=\"" + au['link'] + "\"\>" + au['name'] + "\<\/a\>\<\/cite\> \<\/blockquote\>").fadeIn(1000);
                 if (lcmt.length > 0) {
                     document.cookie = "icmt=" + lcmt[0].im;
                 }
@@ -25,7 +26,7 @@ var liveApp = (function () {
                     document.cookie = "icmt=" + cmt.im;
                 }
             } else {
-                cmtbox.html('');
+                // cmtbox.html('');
             }
         } else {
 
@@ -34,7 +35,10 @@ var liveApp = (function () {
     };
 
     pCmt = function (e, d) {
-        if(!globalStart) { return; }
+        if (!globalStart) {
+            console.log('skip msg');
+            return;
+        }
         if (typeof d == "object") {
             if (d['body']) {
                 jQuery.ajax({
@@ -43,14 +47,11 @@ var liveApp = (function () {
                     dataType: 'json',
                     data: d,
                     success: function (ret) {
-                        lcmt.unshift({'au': {'exd': ''}, 'body': d['body']});
-                        // console.log(ret)
+                        lcmt.unshift(ret);
                     }
                 });
-                // console.log(e);
-                // console.log(d);
             } else {
-                console.log('empty');
+                console.log('empty comment');
             }
         }
 
@@ -63,27 +64,25 @@ var liveApp = (function () {
                 dataType: 'json',
                 data: {'icmt': icmt, 'tstp': tstp},
                 success: function (data) {
+                    if (!globalStart) {
+                        if (data['st']) {
+                            document.location.href = "/";
+                        }
+                    }
                     globalStart = data['st'];
-                    if(globalStart) {
+                    if (globalStart) {
                         icmt = data['icmt'];
                         tstp = data['tstp'];
                     }
-                    rvbox.html(data['rv'] + 10);
+                    rvbox.html(data['rv']);
                     tvbox.html(data['tv']);
-                    // console.log(globalStart);
-                    // console.log(data['lcmt']);
-                    // console.log(au_id);
-                    if (data['lcmt'] && au_id && globalStart) {
-                        // console.log(data['lcmt']);
-                        // console.log(data['lcmt'][0]['au']['uid']);
+                    if (data['lcmt'] && globalStart) {
                         for (var _i = 0; _i < data['lcmt'].length; _i++) {
-                            if (data['lcmt'][_i]['au']['uid'] != au_id) {
+                            if (data['lcmt'][_i]['au']['uid'] != au_id && !data['lcmt'][_i]['au']['isb'] && !data['lcmt'][_i]['isb']) {
                                 lcmt.push(data['lcmt'][_i]);
                             }
                         }
                     }
-
-                    // console.log(lcmt);
                 }
 
             });
@@ -107,89 +106,75 @@ var liveApp = (function () {
         return "";
     };
 
-    function statusChangeCallback(response) {
-        // console.log('statusChangeCallback');
-        // console.log(response);
-        // The response object is returned with a status field that lets the
-        // app know the current login status of the person.
-        // Full docs on the response object can be found in the documentation
-        // for FB.getLoginStatus().
-        if (response.status === 'connected') {
-            // Logged into your app and Facebook.
-            testAPI();
-        } else if (response.status === 'not_authorized') {
-            // The person is logged into Facebook, but not your app.
-            document.getElementById('status').innerHTML = 'Please log ' +
-                'into this app.';
+    function statusChangeCallback(r) {
+        if (r.status === 'connected') {
+            if (!au_id || au_id == "AnonymousUser") { pAuth(r); }
+        } else if (r.status === 'not_authorized') {
+            console.log('not_authorized');
         } else {
-            // The person is not logged into Facebook, so we're not sure if
-            // they are logged into this app or not.
-            document.getElementById('status').innerHTML = 'Please log ' +
-                'into Facebook.';
+            console.log('statusChangeCallback else');
         }
     }
 
-    // This function is called when someone finishes with the Login
-    // Button.  See the onlogin handler attached to it in the sample
-    // code below.
-    function checkLoginState() {
-        FB.getLoginStatus(function (response) {
-            statusChangeCallback(response);
+    checkLoginState = function () {
+        FB.getLoginStatus(function (r) {
+            statusChangeCallback(r);
         });
-    }
+    };
 
-    window.fbAsyncInit = function () {
+    fbAsyncInit = function () {
         FB.init({
             appId: '1401988986704362',
-            cookie: true,  // enable cookies to allow the server to access
-                           // the session
+            cookie: true,  // enable cookies to allow the server to access the session
             xfbml: true,  // parse social plugins on this page
             version: 'v2.8' // use graph api version 2.8
         });
 
-        // Now that we've initialized the JavaScript SDK, we call
-        // FB.getLoginStatus().  This function gets the state of the
-        // person visiting this page and can return one of three states to
-        // the callback you provide.  They can be:
-        //
-        // 1. Logged into your app ('connected')
-        // 2. Logged into Facebook, but not your app ('not_authorized')
-        // 3. Not logged into Facebook and can't tell if they are logged into
-        //    your app or not.
-        //
-        // These three cases are handled in the callback function.
-
         FB.getLoginStatus(function (response) {
             statusChangeCallback(response);
         });
 
-    };
-      // Load the SDK asynchronously
-  (function(d, s, id) {
-    var js, fjs = d.getElementsByTagName(s)[0];
-    if (d.getElementById(id)) return;
-    js = d.createElement(s); js.id = id;
-    js.src = "//connect.facebook.net/en_US/sdk.js";
-    fjs.parentNode.insertBefore(js, fjs);
-  }(document, 'script', 'facebook-jssdk'));
 
-  // Here we run a very simple test of the Graph API after login is
-  // successful.  See statusChangeCallback() for when this call is made.
-  function testAPI() {
-    // console.log('Welcome!  Fetching your information.... ');
-    FB.api('/me', function(response) {
-      // console.log('Successful login for: ' + response.name);
-      // console.log(response);
-      // document.getElementById('status').innerHTML =
-      //   'Thanks for logging in, ' + response.name + '!';
-    });
-    FB.api('/me/picture', function (r) {
-        // console.log(r.data.url);
-    });
-  }
-    init = function (id) {
+    };
+    // Load the SDK asynchronously
+    (function (d, s, id) {
+        var fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) return;
+        js = d.createElement(s);
+        js.id = id;
+        js.src = "//connect.facebook.net/zh_TW/sdk.js";
+        fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));
+
+    // Here we run a very simple test of the Graph API after login is
+    // successful.  See statusChangeCallback() for when this call is made.
+    function pAuth(r) {
+        var d = {};
+        FB.api('/me', function (r1) {
+            d = r1;
+            FB.api('/me/picture', function (r2) {
+                d['pic'] = r2.data.url;
+                d['meta'] = r['authResponse'];
+                jQuery.ajax({
+                    url: '/login/',
+                    method: 'post',
+                    dataType: 'json',
+                    data: d,
+                    success: function (ret) {
+                        setTimeout(function() {
+                            //your code to be executed after 1 second
+                            document.location.href = '/';
+                        }, 1000);
+                    }
+
+                })
+            });
+        });
+    }
+
+    init = function (id, st) {
+        globalStart = st;
         au_id = id;
-        // console.log(au_id);
         icmt = gCk('icmt');
         csrftoken = gCk('csrftoken');
         function csrfSafeMethod(method) {
@@ -215,7 +200,19 @@ var liveApp = (function () {
     parseJSON = function (string) {
         return string ? jQuery.parseJSON(jQuery.parseHTML(string)[0].data) : "訪客";
     };
+    checkLogin = function () {
+        if (!au_id || au_id == 'AnonymousUser') {
+            FB.login(function (r) {
+                if (r['status'] == "connected") {
+                    pAuth(r);
+                }
 
+            });
+
+            return false;
+        }
+        return true;
+    };
 
     return {
         init: init,
@@ -223,7 +220,8 @@ var liveApp = (function () {
         pCmt: pCmt,
         gCmt: gCmt,
         parseJSON: parseJSON,
-        gCk: gCk
+        gCk: gCk,
+        checkLogin: checkLogin
     }
 
 })();

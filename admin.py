@@ -1,19 +1,23 @@
 from django.contrib import admin
-from .models import Message, ControlMeta, AuthenUser, StreamStatistic
+from .models import Comment, ControlMeta, FbAuthenUser, StreamStatistic
 # Register your models here.
 
 
-class AuthenUserAdmin(admin.ModelAdmin):
-    list_display = ('uid', 'is_blacklist')
+class FbAuthenUserAdmin(admin.ModelAdmin):
+    list_display = ('nick_name', 'username', 'pic_thumb', 'is_blacklist')
 
 class MessageAdmin(admin.ModelAdmin):
-    list_display = ('uid', 'content', 'recieved_time', 'pub_count', 'is_blacklist')
+    list_display = ('uid', 'body', 'recieved_time', 'pub_count', 'is_blacklist')
 
 
 class ControlMetaAdmin(admin.ModelAdmin):
     list_display = ('source_name', 'viewer_scaler', 'viewer_offset', 'start_time', 'is_start')
 
 
-admin.site.register(Message, MessageAdmin)
+class StreamStatisticAdmin(admin.ModelAdmin):
+    list_display = ('realtime_viewer', 'total_viewer', 'record_time')
+
+admin.site.register(Comment, MessageAdmin)
 admin.site.register(ControlMeta, ControlMetaAdmin)
-admin.site.register(AuthenUser, AuthenUserAdmin)
+admin.site.register(FbAuthenUser, FbAuthenUserAdmin)
+admin.site.register(StreamStatistic, StreamStatisticAdmin)
