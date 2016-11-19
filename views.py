@@ -47,31 +47,35 @@ class LiveApiView(View):
             icmt = request.GET.get('icmt', '-1')
             tstp = request.GET.get('tstp', '-1')
             try: ic = Message.objects.get(uid=icmt).id
-            except: ic = -1
+            except: ic = -9
             # print(icmt, ic)
-            lastcmt = Message.objects.latest('pk')
-            imax = lastcmt.id
+            try:
+                lastcmt = Message.objects.latest('pk')
+                imax = lastcmt.id
+            except:
+                imax = 0
+
             lcmt = []
-            if ic > 0:
-                if ic < imax:
-                    cmt = Message.objects.filter(id__gt = ic)[:LiveApiView.MAX_CMT_NUM]
+            if imax > 0:
+                if ic > 0:
+                    if ic < imax:
+                        cmt = Message.objects.filter(id__gt = ic)[:LiveApiView.MAX_CMT_NUM]
+                        for m in cmt:
+                            lcmt.append(self.parseCmt(m))
+                        data['lcmt'] = lcmt
+                        data['icmt'] = cmt[len(cmt)-1].uid
+                    else: data['icmt'] = lastcmt.uid
+                else:
+                    cmt = Message.objects.order_by('-id')[:LiveApiView.MAX_CMT_NUM].reverse()
                     for m in cmt:
                         lcmt.append(self.parseCmt(m))
                     data['lcmt'] = lcmt
-                    data['icmt'] = cmt[len(cmt)-1].uid
-                else: data['icmt'] = lastcmt.uid
-            else:
-                cmt = Message.objects.order_by('-id')[:LiveApiView.MAX_CMT_NUM].reverse()
-                for m in cmt:
-                    lcmt.append(self.parseCmt(m))
-                data['lcmt'] = lcmt
-                data['icmt'] = cmt[len(cmt) - 1].uid
+                    data['icmt'] = cmt[len(cmt) - 1].uid
             data['tstp'] = int(time())
             data['rv'], data['tv'] = 0, 0
-            data['st'] = False
             try:
                 data['st'] = ControlMeta.objects.get(pk = 1).is_start
-            except: pass
+            except: data['st'] = False
 
             return JSONResponse(data)
         else: pass
