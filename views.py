@@ -3,6 +3,7 @@ from django.contrib.auth import authenticate, login
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.views import View
+from django.views.decorators.csrf import ensure_csrf_cookie
 from .models import ControlMeta, Comment, FbAuthenUser, StreamStatistic
 from django.contrib.auth.models import User
 from time import time
@@ -82,7 +83,6 @@ class LiveApiView(View):
         global CURRENT_TIME, REALTIME_VIEW, TOTAL_VIEW
         t = int(time())
         if (t - CURRENT_TIME) > TIME_STEP:
-            print('!!!!!')
             record = StreamStatistic(realtime_viewer=REALTIME_VIEW, total_viewer=TOTAL_VIEW)
             try:
                 record.clean()
@@ -150,7 +150,7 @@ class LiveApiView(View):
 
 
 
-
+@ensure_csrf_cookie
 def index(request):
     global TOTAL_VIEW, REALTIME_VIEW
     TOTAL_VIEW += 1

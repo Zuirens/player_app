@@ -26,7 +26,7 @@ var liveApp = (function () {
                     document.cookie = "icmt=" + cmt.im;
                 }
             } else {
-                // cmtbox.html('');
+                cmtbox.fadeOut(1000);
             }
         } else {
 
@@ -51,7 +51,6 @@ var liveApp = (function () {
                     }
                 });
             } else {
-                console.log('empty comment');
             }
         }
 
@@ -74,10 +73,11 @@ var liveApp = (function () {
                         icmt = data['icmt'];
                         tstp = data['tstp'];
                     }
-                    rvbox.html(data['rv']);
+                    rvbox.html(data['rv'] + 10);
                     tvbox.html(data['tv']);
                     if (data['lcmt'] && globalStart) {
                         for (var _i = 0; _i < data['lcmt'].length; _i++) {
+                            console.log(data['lcmt'][_i]['isb']);
                             if (data['lcmt'][_i]['au']['uid'] != au_id && !data['lcmt'][_i]['au']['isb'] && !data['lcmt'][_i]['isb']) {
                                 lcmt.push(data['lcmt'][_i]);
                             }
@@ -108,9 +108,10 @@ var liveApp = (function () {
 
     function statusChangeCallback(r) {
         if (r.status === 'connected') {
-            if (!au_id || au_id == "AnonymousUser") { pAuth(r); }
+            if (!au_id || au_id == "AnonymousUser") {
+                pAuth(r);
+            }
         } else if (r.status === 'not_authorized') {
-            console.log('not_authorized');
         } else {
             console.log('statusChangeCallback else');
         }
@@ -123,7 +124,6 @@ var liveApp = (function () {
     };
 
     fbAsyncInit = function () {
-        console.log('!');
         FB.init({
             appId: '1401988986704362',
             cookie: true,  // enable cookies to allow the server to access the session
@@ -155,14 +155,15 @@ var liveApp = (function () {
             d = r1;
             FB.api('/me/picture', function (r2) {
                 d['pic'] = r2.data.url;
-                d['meta'] = r['authResponse'];
+                d['meta'] = r['authResponse']
                 jQuery.ajax({
                     url: '/login/',
                     method: 'post',
                     dataType: 'json',
                     data: d,
                     success: function (ret) {
-                        setTimeout(function() {
+
+                        setTimeout(function () {
                             //your code to be executed after 1 second
                             document.location.href = '/';
                         }, 1000);
@@ -177,11 +178,23 @@ var liveApp = (function () {
         globalStart = st;
         au_id = id;
         icmt = gCk('icmt');
-        csrftoken = gCk('csrftoken');
-        function csrfSafeMethod(method) {
-            // these HTTP methods do not require CSRF protection
-            return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+        function getCookie(name) {
+            var cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                var cookies = document.cookie.split(';');
+                for (var i = 0; i < cookies.length; i++) {
+                    var cookie = jQuery.trim(cookies[i]);
+                    // Does this cookie string begin with the name we want?
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
         }
+
+        csrftoken = getCookie('csrftoken');
 
         jQuery.ajaxSetup({
             beforeSend: function (xhr, settings) {
@@ -190,6 +203,11 @@ var liveApp = (function () {
                 }
             }
         });
+        function csrfSafeMethod(method) {
+            // these HTTP methods do not require CSRF protection
+            return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+        }
+
         gCmt();
     };
 
