@@ -4,12 +4,14 @@
 
 var liveApp = (function () {
     var icmt = 0, tstp = 0, rv = 0, tv = 0, st = false, lcmt = [], au_id = '',
+        globalStart = false,
         cmtbox = jQuery('.reviewTitle'),
         rvbox = jQuery('li#rv > span'),
         tvbox = jQuery('li#tv > span'),
         csrftoken;
 
     showCmt = function (s) {
+        if(!globalStart) { return; }
         if (!s) {
             // console.log(au_id);
             if (lcmt.length > 0) {
@@ -29,10 +31,10 @@ var liveApp = (function () {
 
         }
 
-
     };
 
     pCmt = function (e, d) {
+        if(!globalStart) { return; }
         if (typeof d == "object") {
             if (d['body']) {
                 jQuery.ajax({
@@ -61,13 +63,17 @@ var liveApp = (function () {
                 dataType: 'json',
                 data: {'icmt': icmt, 'tstp': tstp},
                 success: function (data) {
-                    // console.log(data);
-                    icmt = data['icmt'];
-                    tstp = data['tstp'];
+                    globalStart = data['st'];
+                    if(globalStart) {
+                        icmt = data['icmt'];
+                        tstp = data['tstp'];
+                    }
                     rvbox.html(data['rv'] + 10);
                     tvbox.html(data['tv']);
-
-                    if (data['lcmt'] && au_id) {
+                    // console.log(globalStart);
+                    // console.log(data['lcmt']);
+                    // console.log(au_id);
+                    if (data['lcmt'] && au_id && globalStart) {
                         // console.log(data['lcmt']);
                         // console.log(data['lcmt'][0]['au']['uid']);
                         for (var _i = 0; _i < data['lcmt'].length; _i++) {
@@ -102,8 +108,8 @@ var liveApp = (function () {
     };
 
     function statusChangeCallback(response) {
-        console.log('statusChangeCallback');
-        console.log(response);
+        // console.log('statusChangeCallback');
+        // console.log(response);
         // The response object is returned with a status field that lets the
         // app know the current login status of the person.
         // Full docs on the response object can be found in the documentation
@@ -170,19 +176,20 @@ var liveApp = (function () {
   // Here we run a very simple test of the Graph API after login is
   // successful.  See statusChangeCallback() for when this call is made.
   function testAPI() {
-    console.log('Welcome!  Fetching your information.... ');
+    // console.log('Welcome!  Fetching your information.... ');
     FB.api('/me', function(response) {
-      console.log('Successful login for: ' + response.name);
-      console.log(response);
+      // console.log('Successful login for: ' + response.name);
+      // console.log(response);
       // document.getElementById('status').innerHTML =
       //   'Thanks for logging in, ' + response.name + '!';
     });
     FB.api('/me/picture', function (r) {
-        console.log(r.data.url);
+        // console.log(r.data.url);
     });
   }
     init = function (id) {
         au_id = id;
+        // console.log(au_id);
         icmt = gCk('icmt');
         csrftoken = gCk('csrftoken');
         function csrfSafeMethod(method) {

@@ -262,7 +262,7 @@
                     var j = this.element.getElementsByClassName("dplayer-mask")[0];
                     // U.innerHTML = V.original;
                     var G = function () {
-                        console.log('G');
+                        // console.log('G');
                             // U.classList.contains("dplayer-setting-box-open") && (U.classList.remove("dplayer-setting-box-open"), j.classList.remove("dplayer-mask-show"), setTimeout(function () {
                             //     U.classList.remove("dplayer-setting-box-narrow"), U.innerHTML = V.original, $()
                             // }, 300))
