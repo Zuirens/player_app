@@ -123,6 +123,7 @@ var liveApp = (function () {
     };
 
     fbAsyncInit = function () {
+        console.log('!');
         FB.init({
             appId: '1401988986704362',
             cookie: true,  // enable cookies to allow the server to access the session
