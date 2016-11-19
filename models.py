@@ -1,46 +1,58 @@
 from django.db import models
-from django.contrib.auth.models import User
+from django.contrib.auth.models import AbstractBaseUser
 import uuid
-from datetime import datetime
 from django.utils.translation import ugettext_lazy as _
+from django.utils import timezone
 
 # Create your models here.
-class AuthenUser(models.Model):
-    user = models.OneToOneField(
-        User,
-        on_delete=models.CASCADE,
-        primary_key=True,
-    )
-    uid = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
+class FbAuthenUser(AbstractBaseUser):
+    nick_name = models.CharField(max_length=31)
+    username = models.CharField(unique=True, max_length=127)
+    picture = models.CharField(max_length=1023, blank=True)
     extra_data = models.TextField(blank=True)
+    gender = models.CharField(max_length=31, blank=True)
+    link = models.CharField(max_length=255)
+    locale = models.CharField(max_length=31, blank=True)
+    zone = models.IntegerField(default=1, blank=True)
+    updated_time = models.CharField(max_length=31, blank=True)
+    verified = models.BooleanField(default=False, blank=True)
     is_blacklist = models.BooleanField(default=False)
+    password = models.UUIDField(default=uuid.uuid4)
+    USERNAME_FIELD = 'username'
+    # user = models.OneToOneField(
+    #     User,
+    #     on_delete=models.CASCADE,
+    #     primary_key=True,
+    # )
+    def pic_thumb(self):
+        return '<img src="%s" height="100" />' % (self.picture)
 
     def __str__(self):
-        return '{}'.format(self.user.username)
+        return '{}'.format(self.username)
 
     class Meta:
-        verbose_name = _('AUTHEN-USER')
+        verbose_name = _('FACEBOOK USER')
         verbose_name_plural = verbose_name
 
-class AnonyVisitor(models.Model):
-    uid = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
-    date_joined = models.DateTimeField(auto_now_add=True)
-    last_visit = models.DateTimeField(auto_now=True)
-    visit_count = models.PositiveIntegerField(default=0)
-    identity = models.ForeignKey(AuthenUser, on_delete=models.CASCADE, blank=True)
+# class AnonyVisitor(models.Model):
+#     uid = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
+#     date_joined = models.DateTimeField(default = timezone.now)
+#     last_visit = models.DateTimeField(default = timezone.now)
+#     visit_count = models.PositiveIntegerField(default=0)
+#     identity = models.ForeignKey(FbAuthenUser, on_delete=models.CASCADE, blank=True)
 
 
-class Message(models.Model):
+class Comment(models.Model):
     uid = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
-    author = models.ForeignKey(AuthenUser, on_delete=models.CASCADE)
-    content = models.CharField(max_length=255)
-    recieved_time = models.DateTimeField(auto_now_add=True)
-    last_pub_time = models.DateTimeField(auto_now=True)
+    author = models.ForeignKey(FbAuthenUser, on_delete=models.CASCADE)
+    body = models.CharField(max_length=255)
+    recieved_time = models.DateTimeField(default = timezone.now)
+    last_pub_time = models.DateTimeField(default = timezone.now)
     pub_count = models.PositiveIntegerField(default=0)
     is_blacklist = models.BooleanField(default=False)
 
     class Meta:
-        verbose_name = _('MESSAGE')
+        verbose_name = _('COMMENT')
         verbose_name_plural = verbose_name
 
 class CensorWord(models.Model):
@@ -48,9 +60,13 @@ class CensorWord(models.Model):
     count = models.PositiveIntegerField(default=0)
 
 class StreamStatistic(models.Model):
-    record_time = models.DateTimeField(default = datetime.now)
+    record_time = models.DateTimeField(default = timezone.now)
     realtime_viewer = models.PositiveIntegerField(default=0)
     total_viewer = models.PositiveIntegerField(default=0)
+
+    class Meta:
+        verbose_name = _('STATISTIC')
+        verbose_name_plural = verbose_name
 
 class ControlMeta(models.Model):
     source_name = models.CharField(max_length=31)
@@ -61,7 +77,6 @@ class ControlMeta(models.Model):
     start_time = models.DateTimeField(auto_now=True)
     is_start = models.BooleanField(default = False)
 
-
     class Meta:
-        verbose_name = _('CONTROL-META')
+        verbose_name = _('CONTROL META')
         verbose_name_plural = verbose_name

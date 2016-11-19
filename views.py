@@ -1,14 +1,22 @@
 from rest_framework.renderers import JSONRenderer
-from django.http import HttpResponse
+from django.contrib.auth import authenticate, login
+from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.views import View
-from .models import ControlMeta, Message
+from .models import ControlMeta, Comment, FbAuthenUser, StreamStatistic
 from django.contrib.auth.models import User
 from time import time
 from django.db.models import Max
 import base64
 import re
 import json
+
+
+TOTAL_VIEW = 0
+TIME_STEP = 10
+REALTIME_VIEW = 0
+CURRENT_TIME = int(time())
+
 
 class JSONResponse(HttpResponse):
     """
@@ -21,18 +29,47 @@ class JSONResponse(HttpResponse):
 
 
 
+class LoginView(View):
+    def post(self, request):
+        if request.is_ajax():
+            try:
+                uid = request.POST.get('id')
+                nick_name = request.POST.get('name')
+                link = request.POST.get('link')
+                verified = request.POST.get('verified') == 'true'
+                pic = request.POST.get('pic')
+                user = FbAuthenUser(username=uid, nick_name=nick_name, picture=pic, verified=verified, link=link)
+                print(user)
+                try:
+                    user.full_clean()
+                    user.save()
+                except: pass
+
+                au_user = authenticate(username=uid)
+                if au_user is not None:
+                    login(request, au_user)
+                return JSONResponse({'ec': 0})
+
+            except Exception as e:
+                print(repr(e))
+                pass
+        return JSONResponse({'ec': -1})
+
 class LiveApiView(View):
     MAX_CMT_NUM = 10
 
     def parseCmt(self, msg_model):
+
         msg = {}
         au_model = msg_model.author
         au = {}
-        au['uid'] = au_model.uid
-        au['exd'] = re.sub(r'[\n\r\s]+', r'', au_model.extra_data)
+        au['uid'] = au_model.username
+        au['link'] = au_model.link
         au['isb'] = au_model.is_blacklist
+        au['name'] = au_model.nick_name
+        # au['exd'] = re.sub(r'[\n\r\s]+', r'', au_model.extra_data)
 
-        msg['body'] = msg_model.content
+        msg['body'] = msg_model.body
         msg['au'] = au
         msg['im'] = msg_model.uid
         msg['isb'] = msg_model.is_blacklist
@@ -42,60 +79,85 @@ class LiveApiView(View):
 
     # we use get method to handle request for comments
     def get(self, request):
+        global CURRENT_TIME, REALTIME_VIEW, TOTAL_VIEW
+        t = int(time())
+        if (t - CURRENT_TIME) > TIME_STEP:
+            print('!!!!!')
+            record = StreamStatistic(realtime_viewer=REALTIME_VIEW, total_viewer=TOTAL_VIEW)
+            try:
+                record.clean()
+                record.save()
+            except Exception as e:
+                print(e)
+            CURRENT_TIME = t
+            REALTIME_VIEW = 0
         if request.is_ajax():
             data = {}
             icmt = request.GET.get('icmt', '-1')
-            tstp = request.GET.get('tstp', '-1')
-            try: ic = Message.objects.get(uid=icmt).id
-            except: ic = -1
-            print(icmt, ic)
-            lastcmt = Message.objects.latest('pk')
-            imax = lastcmt.id
+            try: ic = Comment.objects.get(uid=icmt).id
+            except: ic = -9
+            try:
+                lastcmt = Comment.objects.latest('pk')
+                imax = lastcmt.id
+            except:
+                imax = 0
+
             lcmt = []
-            if ic > 0:
-                if ic < imax:
-                    cmt = Message.objects.filter(id__gt = ic)[:LiveApiView.MAX_CMT_NUM]
+            if imax > 0:
+                if ic > 0:
+                    if ic < imax:
+                        cmt = Comment.objects.filter(id__gt = ic)[:LiveApiView.MAX_CMT_NUM]
+                        for m in cmt:
+                            lcmt.append(self.parseCmt(m))
+                        data['lcmt'] = lcmt
+                        data['icmt'] = cmt[len(cmt)-1].uid
+                    else: data['icmt'] = lastcmt.uid
+                else:
+                    cmt = Comment.objects.order_by('-id')[:LiveApiView.MAX_CMT_NUM].reverse()
                     for m in cmt:
                         lcmt.append(self.parseCmt(m))
                     data['lcmt'] = lcmt
-                    data['icmt'] = cmt[len(cmt)-1].uid
-                else: data['icmt'] = lastcmt.uid
-            else:
-                cmt = Message.objects.order_by('-id')[:LiveApiView.MAX_CMT_NUM].reverse()
-                for m in cmt:
-                    lcmt.append(self.parseCmt(m))
-                data['lcmt'] = lcmt
-                data['icmt'] = cmt[len(cmt) - 1].uid
+                    data['icmt'] = cmt[len(cmt) - 1].uid
             data['tstp'] = int(time())
-            data['rv'], data['tv'] = 0, 0
-            data['st'] = False
+
             try:
-                data['st'] = ControlMeta.objects.get(pk = 1).is_start
-            except: pass
-
+                meta = ControlMeta.objects.get(pk = 1)
+                data['st'] = meta.is_start
+                data['rv'], data['tv'] = int(REALTIME_VIEW * meta.viewer_scaler + meta.viewer_offset), int(TOTAL_VIEW * meta.viewer_scaler + meta.viewer_offset)
+            except:
+                data['st'] = False
+                data['rv'], data['tv'] = REALTIME_VIEW, TOTAL_VIEW
+            data['ec'] = 0
             return JSONResponse(data)
+        else: return JSONResponse({'ec': 1})
 
-        return JSONResponse({'icmt': -1, 'tstp': -1})
 
     def post(self, request, *args, **kwargs):
         if request.is_ajax():
-            pass
-        return JSONResponse({'icmt': -1, 'tstp': -1})
+            try:
+                body = request.POST.get('body')
+                au_uid = request.POST.get('author')
+                msg = Comment(author = FbAuthenUser.objects.get(username=au_uid), body=body)
+                msg.full_clean()
+                msg.save()
+                cmt = self.parseCmt(msg)
+                return JSONResponse(cmt)
+            except:
+                return JSONResponse({'ec': 1})
+
+
+        return JSONResponse({'ec': -1})
 
 
 
 
 def index(request):
+    global TOTAL_VIEW, REALTIME_VIEW
+    TOTAL_VIEW += 1
+    REALTIME_VIEW += 1
+
     try:
         cm = ControlMeta.objects.get(pk = 1)
     except: pass
-    abc = 10
-    try:
-        if request.user.is_authenticated():
-            au_user = User.objects.get(username = request.user).authenuser
-            au_user.extra_data = re.sub(r'[\n\r\s]+', r'', au_user.extra_data)
-            print(au_user.extra_data)
-            pass
-        else: pass
-    except: pass
+
     return render(request, 'index.html', locals())
