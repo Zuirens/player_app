@@ -43,16 +43,49 @@ acronym.abbr {
 }
 
 blockquote {
-    border-left: 5px solid rgba(255, 255, 255, .75);
-    display: inline-block;
+    display: block;
+    font-size: 22px;
     position: relative;
     margin: 1em 0 1em 15px;
     padding: 0 0 0 25px;
+    color: #ffffff;
+    line-height: 32px;
 }
-
+blockquote:before {
+    display: block;
+    content: "\201C";
+    font-size: 80px;
+    position: absolute;
+    left: -10px;
+    top: -10px;
+    color: #ffffff;
+}
 blockquote cite {
     display: block;
+    font-size: 16px;
     margin: 5px 0 0;
+    margin-top: 15px;
+    color: #cccccc;
+}
+
+blockquote cite a:link {
+    text-decoration: none;
+    color: #cccccc;
+}
+
+blockquote cite a:visited {
+    text-decoration: none;
+    color: #cccccc;
+}
+
+blockquote cite a:hover {
+    text-decoration: underline;
+    color: #ffffff;
+}
+
+blockquote cite a:active {
+    text-decoration: underline;
+    color: #ffffff;
 }
 
 hr {
@@ -2747,7 +2780,7 @@ body.mobile-device #footerContainer {
 #zs-credits {
     text-align: center;
     width: 80%;
-    margin: 10px auto 40px;
+    margin: 10px auto 20px;
     max-width: 1000px;
 }
 

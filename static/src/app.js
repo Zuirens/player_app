@@ -12,7 +12,7 @@ var liveApp = (function () {
         if(lcmt.length > 0) {
             var cmt = lcmt.shift(), au = parseJSON(cmt['au']['exd']);
             // console.log(au['authResponse']['userID']);
-            cmtbox.html(au['authResponse']['userID'] + ':' + cmt['body']);
+            cmtbox.html(au['authResponse']['userID'] + ':' + cmt['body']).delay(5000).fadeIn;
             if(lcmt.length > 0) { document.cookie = "icmt=" + lcmt[0].im; }
             else { document.cookie = "icmt=" + cmt.im; }
         } else { cmtbox.html(''); }
@@ -47,7 +47,7 @@ var liveApp = (function () {
     };
 
 
-    
+
     gCk = function(cname) {
     var name = cname + "=";
     var ca = document.cookie.split(';');
