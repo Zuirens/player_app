@@ -15,10 +15,13 @@ var liveApp = (function () {
             return;
         }
         if (!s) {
-            cmtbox.fadeOut(1000);
+            
             if (lcmt.length > 0) {
-                var cmt = lcmt.shift(), au = cmt['au'];
-                cmtbox.html("\<blockquote\>" + cmt['body'] + "\<cite\>\<a href=\"" + au['link'] + "\"\>" + au['name'] + "\<\/a\>\<\/cite\> \<\/blockquote\>").fadeIn(1000);
+                cmtbox.fadeOut(1000, function () {
+                    var cmt = lcmt.shift(), au = cmt['au'];
+                    cmtbox.html("\<blockquote\>" + cmt['body'] + "\<cite\>\<a href=\"" + au['link'] + "\"\>" + au['name'] + "\<\/a\>\<\/cite\> \<\/blockquote\>").fadeIn(1000);
+                });
+
                 if (lcmt.length > 0) {
                     document.cookie = "icmt=" + lcmt[0].im;
                 }
@@ -73,11 +76,10 @@ var liveApp = (function () {
                         icmt = data['icmt'];
                         tstp = data['tstp'];
                     }
-                    rvbox.html(data['rv'] + 10);
+                    rvbox.html(data['rv']);
                     tvbox.html(data['tv']);
                     if (data['lcmt'] && globalStart) {
                         for (var _i = 0; _i < data['lcmt'].length; _i++) {
-                            console.log(data['lcmt'][_i]['isb']);
                             if (data['lcmt'][_i]['au']['uid'] != au_id && !data['lcmt'][_i]['au']['isb'] && !data['lcmt'][_i]['isb']) {
                                 lcmt.push(data['lcmt'][_i]);
                             }

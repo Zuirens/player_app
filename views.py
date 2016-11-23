@@ -5,16 +5,11 @@ from django.shortcuts import render
 from django.views import View
 from django.views.decorators.csrf import ensure_csrf_cookie
 from .models import ControlMeta, Comment, FbAuthenUser, StreamStatistic
-from django.contrib.auth.models import User
 from time import time
-from django.db.models import Max
-import base64
-import re
+import subprocess
 import json
-
-
 TOTAL_VIEW = 0
-TIME_STEP = 10
+TIME_STEP = 60
 REALTIME_VIEW = 0
 CURRENT_TIME = int(time())
 
@@ -92,6 +87,17 @@ class LiveApiView(View):
             CURRENT_TIME = t
             REALTIME_VIEW = 0
         if request.is_ajax():
+            d = {}
+            for k, v in request.META.items():
+                if type(v) == str or type(v) == int:
+                    d[k] = v
+                else: d[k] = repr(v)
+            # with open('tt.txt', 'a') as f:
+            #     json.dump(d, f)
+            #     f.write('\n')
+            # s = json.dumps(d)
+            # cmd = 'echo \'' + s + '\' >>! tt.txt'
+            # subprocess.run(cmd, shell=True)
             data = {}
             icmt = request.GET.get('icmt', '-1')
             try: ic = Comment.objects.get(uid=icmt).id
@@ -123,7 +129,7 @@ class LiveApiView(View):
             try:
                 meta = ControlMeta.objects.get(pk = 1)
                 data['st'] = meta.is_start
-                data['rv'], data['tv'] = int(REALTIME_VIEW * meta.viewer_scaler + meta.viewer_offset), int(TOTAL_VIEW * meta.viewer_scaler + meta.viewer_offset)
+                data['rv'], data['tv'] = int(REALTIME_VIEW * meta.viewer_scaler), int(TOTAL_VIEW + meta.viewer_offset)
             except:
                 data['st'] = False
                 data['rv'], data['tv'] = REALTIME_VIEW, TOTAL_VIEW
