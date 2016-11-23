@@ -205,20 +205,24 @@ var liveApp = (function () {
         csrftoken = gCk('csrftoken');
         console.log('[3]csrftoken should be set, csrftoken: ' + csrftoken);
 
-        jQuery.ajaxSetup({
-            beforeSend: function (xhr, settings) {
-                if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
-                    xhr.setRequestHeader("X-CSRFToken", csrftoken);
-                    console.log('[4]ajaxSetup set');
-                }
-            }
-
-        });
         function csrfSafeMethod(method) {
             // these HTTP methods do not require CSRF protection
             console.log('[?]when to csrfSafeMethod?');
             return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
         }
+
+        jQuery.ajaxSetup({
+            beforeSend: function (xhr, settings) {
+                console.log('[4]ajaxSetup set:');
+                console.log(xhr);
+                console.log(settings);
+                if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                    xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                }
+            }
+
+        });
+
 
         gCmt();
     };
