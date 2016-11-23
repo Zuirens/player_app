@@ -15,7 +15,7 @@ var liveApp = (function () {
             return;
         }
         if (!s) {
-            
+
             if (lcmt.length > 0) {
                 cmtbox.fadeOut(1000, function () {
                     var cmt = lcmt.shift(), au = cmt['au'];
@@ -139,7 +139,7 @@ var liveApp = (function () {
         });
 
 
-    }();
+    };
     // Load the SDK asynchronously
     (function (d, s, id) {
         console.log('Load the SDK');
@@ -232,9 +232,9 @@ var liveApp = (function () {
         setInterval(gCmt, 5000);
     })();
 
-    parseJSON = function (string) {
-        return string ? jQuery.parseJSON(jQuery.parseHTML(string)[0].data) : "訪客";
-    };
+    // parseJSON = function (string) {
+    //     return string ? jQuery.parseJSON(jQuery.parseHTML(string)[0].data) : "訪客";
+    // };
     checkLogin = function () {
         if (!au_id || au_id == 'AnonymousUser') {
             FB.login(function (r) {
@@ -254,9 +254,9 @@ var liveApp = (function () {
         showCmt: showCmt,
         pCmt: pCmt,
         gCmt: gCmt,
-        parseJSON: parseJSON,
+        // parseJSON: parseJSON,
         gCk: gCk,
         checkLogin: checkLogin
     }
 
-})();
+}());
