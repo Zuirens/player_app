@@ -87,7 +87,8 @@
 <script>
     // Live Video (HTTP Live Streaming, M3U8 format) support
     (function () {
-        var st = '{{ cm.is_start|yesno }}' == 'yes',
+        var tmp = '{{ cm.is_start|yesno }}',
+            st = tmp == 'yes' || tmp == 'True',
             id =  '{{ user.username }}',
             dp3 = new DPlayer({
                 element: document.getElementById('dplayer3'),
@@ -108,6 +109,7 @@
             });
             if(!st) { dp3.pause(); }
             liveApp.init(id, st);
+            console.log('{{ cm.is_start|yesno }}');
             console.log('id:' + id);
     })();
 </script>

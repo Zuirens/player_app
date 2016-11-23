@@ -126,21 +126,23 @@ var liveApp = (function () {
     };
 
     fbAsyncInit = function () {
+        console.log('fbAsyncInit');
         FB.init({
             appId: '1401988986704362',
             cookie: true,  // enable cookies to allow the server to access the session
             xfbml: true,  // parse social plugins on this page
             version: 'v2.8' // use graph api version 2.8
         });
-
+        console.log('FB.inited');
         FB.getLoginStatus(function (response) {
             statusChangeCallback(response);
         });
 
 
-    };
+    }();
     // Load the SDK asynchronously
     (function (d, s, id) {
+        console.log('Load the SDK');
         var fjs = d.getElementsByTagName(s)[0];
         if (d.getElementById(id)) return;
         js = d.createElement(s);
@@ -177,36 +179,44 @@ var liveApp = (function () {
     }
 
     init = function (id, st) {
+        console.log('[1]app init');
         globalStart = st;
         au_id = id;
         icmt = gCk('icmt');
-        function getCookie(name) {
-            var cookieValue = null;
-            if (document.cookie && document.cookie !== '') {
-                var cookies = document.cookie.split(';');
-                for (var i = 0; i < cookies.length; i++) {
-                    var cookie = jQuery.trim(cookies[i]);
-                    // Does this cookie string begin with the name we want?
-                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
-                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                        break;
-                    }
-                }
-            }
-            return cookieValue;
-        }
 
-        csrftoken = getCookie('csrftoken');
+        console.log('[2]icmt should be got');
+
+        // function getCookie(name) {
+        //     var cookieValue = null;
+        //     if (document.cookie && document.cookie !== '') {
+        //         var cookies = document.cookie.split(';');
+        //         for (var i = 0; i < cookies.length; i++) {
+        //             var cookie = jQuery.trim(cookies[i]);
+        //             // Does this cookie string begin with the name we want?
+        //             if (cookie.substring(0, name.length + 1) === (name + '=')) {
+        //                 cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+        //                 break;
+        //             }
+        //         }
+        //     }
+        //     return cookieValue;
+        // }
+
+        csrftoken = gCk('csrftoken');
+        console.log('[3]csrftoken should be set, csrftoken: ' + csrftoken);
 
         jQuery.ajaxSetup({
             beforeSend: function (xhr, settings) {
                 if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
                     xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                    console.log('[4]ajaxSetup set');
                 }
             }
+
         });
         function csrfSafeMethod(method) {
             // these HTTP methods do not require CSRF protection
+            console.log('[?]when to csrfSafeMethod?');
             return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
         }
 
