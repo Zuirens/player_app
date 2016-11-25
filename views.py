@@ -52,7 +52,7 @@ class LoginView(View):
         return JSONResponse({'ec': -1})
 
 class LiveApiView(View):
-    MAX_CMT_NUM = 10
+    MAX_CMT_NUM = 1
 
     def parseCmt(self, msg_model):
 
@@ -127,7 +127,7 @@ class LiveApiView(View):
             data['tstp'] = int(time())
 
             try:
-                meta = ControlMeta.objects.get(pk = 1)
+                meta = ControlMeta.objects.latest('pk')
                 data['st'] = meta.is_start
                 data['rv'], data['tv'] = int(REALTIME_VIEW * meta.viewer_scaler), int(TOTAL_VIEW + meta.viewer_offset)
             except:
@@ -163,7 +163,7 @@ def index(request):
     REALTIME_VIEW += 1
 
     try:
-        cm = ControlMeta.objects.get(pk = 1)
+        cm = ControlMeta.objects.latest('pk')
     except: pass
 
     return render(request, 'index.html', locals())
