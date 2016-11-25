@@ -8,6 +8,7 @@ from .models import ControlMeta, Comment, FbAuthenUser, StreamStatistic
 from time import time
 import subprocess
 import json
+from random import random
 TOTAL_VIEW = 0
 TIME_STEP = 60
 REALTIME_VIEW = 0
@@ -80,8 +81,9 @@ class LiveApiView(View):
         if (t - CURRENT_TIME) > TIME_STEP:
             record = StreamStatistic(realtime_viewer=REALTIME_VIEW, total_viewer=TOTAL_VIEW)
             try:
-                record.clean()
-                record.save()
+                if random() <= 0.25:
+                    record.clean()
+                    record.save()
             except Exception as e:
                 print(e)
             CURRENT_TIME = t
