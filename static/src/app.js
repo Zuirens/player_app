@@ -110,13 +110,13 @@ var liveApp = (function () {
 
     function statusChangeCallback(r) {
         if (r.status === 'connected') {
-            console.log('connected');
+            // console.log('connected'); -------------
             if (!au_id || au_id == "AnonymousUser") {
                 pAuth(r);
             }
         } else if (r.status === 'not_authorized') {
         } else {
-            console.log('statusChangeCallback else');
+            // console.log('statusChangeCallback else'); -------------
         }
     }
 
@@ -127,14 +127,14 @@ var liveApp = (function () {
     // }
 
     (function fbAsyncInit() {
-        console.log('fbAsyncInit');
+        // console.log('fbAsyncInit'); -------------
         FB.init({
             appId: '1401988986704362',
             cookie: true,  // enable cookies to allow the server to access the session
             xfbml: true,  // parse social plugins on this page
             version: 'v2.8' // use graph api version 2.8
         });
-        console.log('FB.inited');
+        // console.log('FB.inited'); -------------
         FB.getLoginStatus(function (response) {
             statusChangeCallback(response);
         });
@@ -143,7 +143,7 @@ var liveApp = (function () {
     })();
     // Load the SDK asynchronously
     (function (d, s, id) {
-        console.log('Load the SDK');
+        // console.log('Load the SDK'); -------------
         var fjs = d.getElementsByTagName(s)[0];
         if (d.getElementById(id)) return;
         js = d.createElement(s);
@@ -155,7 +155,7 @@ var liveApp = (function () {
     // Here we run a very simple test of the Graph API after login is
     // successful.  See statusChangeCallback() for when this call is made.
     function pAuth(r) {
-        console.log('pAuth');
+        // console.log('pAuth'); -------------
         var d = {};
         FB.api('/me', function (r1) {
             d = r1;
@@ -168,7 +168,7 @@ var liveApp = (function () {
                     dataType: 'json',
                     data: d,
                     success: function (ret) {
-                        console.log('pAuth Post Ret');
+                        // console.log('pAuth Post Ret'); -------------
 
                         setTimeout(function () {
                             //your code to be executed after 1 second
@@ -182,12 +182,12 @@ var liveApp = (function () {
     }
 
     init = function (id, st) {
-        console.log('[1]app init');
+        // console.log('[1]app init'); -------------
         globalStart = st;
         au_id = id;
         icmt = gCk('icmt');
 
-        console.log('[2]icmt should be got');
+        // console.log('[2]icmt should be got'); -------------
 
         // function getCookie(name) {
         //     var cookieValue = null;
@@ -206,11 +206,11 @@ var liveApp = (function () {
         // }
 
         csrftoken = gCk('csrftoken');
-        console.log('[3]csrftoken should be set, csrftoken: ' + csrftoken);
+        // console.log('[3]csrftoken should be set, csrftoken: ' + csrftoken); -------------
 
         function csrfSafeMethod(method) {
             // these HTTP methods do not require CSRF protection
-            console.log('[?]when to csrfSafeMethod?');
+            // console.log('[?]when to csrfSafeMethod?'); -------------
             return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
         }
 
@@ -239,7 +239,7 @@ var liveApp = (function () {
     //     return string ? jQuery.parseJSON(jQuery.parseHTML(string)[0].data) : "訪客";
     // };
     checkLogin = function () {
-        console.log('checkLogin');
+        // console.log('checkLogin'); -------------
         if (!au_id || au_id == 'AnonymousUser') {
             FB.login(function (r) {
                 if (r['status'] == "connected") {
