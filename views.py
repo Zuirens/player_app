@@ -77,6 +77,7 @@ class LiveApiView(View):
     # we use get method to handle request for comments
     def get(self, request):
         global CURRENT_TIME, REALTIME_VIEW, TOTAL_VIEW
+        print('-------------------' + str(ID) + '-------------------')
         t = int(time())
         if (t - CURRENT_TIME) > TIME_STEP:
             record = StreamStatistic(realtime_viewer=REALTIME_VIEW, total_viewer=TOTAL_VIEW)
@@ -160,8 +161,6 @@ class LiveApiView(View):
 
 @ensure_csrf_cookie
 def index(request):
-    print('-------------------' + str(ID) + '-------------------')
-
     global TOTAL_VIEW, REALTIME_VIEW
     TOTAL_VIEW += 1
     REALTIME_VIEW += 1
