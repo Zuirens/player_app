@@ -13,7 +13,7 @@ TOTAL_VIEW = 0
 TIME_STEP = 60
 REALTIME_VIEW = 0
 CURRENT_TIME = int(time())
-
+ID = random.randint(1, 65536)
 
 class JSONResponse(HttpResponse):
     """
@@ -160,6 +160,8 @@ class LiveApiView(View):
 
 @ensure_csrf_cookie
 def index(request):
+    print('-------------------' + str(ID) + '-------------------')
+
     global TOTAL_VIEW, REALTIME_VIEW
     TOTAL_VIEW += 1
     REALTIME_VIEW += 1
