@@ -128,7 +128,7 @@ class LiveApiView(View):
                     else: data['icmt'] = lastcmt.uid
                 else:
                     print('ic <= 0:')
-                    cmt = Comment.objects.order_by('-id')[:LiveApiView.MAX_CMT_NUM].reverse()
+                    cmt = Comment.objects.order_by('-id')[:LiveApiView.MAX_CMT_NUM][::-1]
                     for m in cmt:
                         print(m.id, m.body)
                         lcmt.append(self.parseCmt(m))
