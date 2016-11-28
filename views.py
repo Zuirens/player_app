@@ -111,20 +111,26 @@ class LiveApiView(View):
                 imax = lastcmt.id
             except:
                 imax = 0
+            print('* * * * * * * * * * * * * * * * * * * * *')
+            print(ic, imax)
 
             lcmt = []
             if imax > 0:
                 if ic > 0:
+                    print('ic > 0:')
                     if ic < imax:
                         cmt = Comment.objects.filter(id__gt = ic)[:LiveApiView.MAX_CMT_NUM]
                         for m in cmt:
+                            print(m.id, m.body)
                             lcmt.append(self.parseCmt(m))
                         data['lcmt'] = lcmt
                         data['icmt'] = cmt[len(cmt)-1].uid
                     else: data['icmt'] = lastcmt.uid
                 else:
+                    print('ic <= 0:')
                     cmt = Comment.objects.order_by('-id')[:LiveApiView.MAX_CMT_NUM].reverse()
                     for m in cmt:
+                        print(m.id, m.body)
                         lcmt.append(self.parseCmt(m))
                     data['lcmt'] = lcmt
                     data['icmt'] = cmt[len(cmt) - 1].uid
