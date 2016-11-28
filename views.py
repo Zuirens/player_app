@@ -93,18 +93,14 @@ class LiveApiView(View):
         if request.is_ajax():
             d = {}
             for k, v in request.META.items():
-                if type(v) == str or type(v) == int:
-                    d[k] = v
+                if type(v) == str or type(v) == int: d[k] = v
                 else: d[k] = repr(v)
-            # with open('tt.txt', 'a') as f:
-            #     json.dump(d, f)
-            #     f.write('\n')
-            # s = json.dumps(d)
-            # cmd = 'echo \'' + s + '\' >>! tt.txt'
-            # subprocess.run(cmd, shell=True)
             data = {}
             icmt = request.GET.get('icmt', '-1')
-            try: ic = Comment.objects.get(uid=icmt).id
+            thiscmt = None
+            try:
+                thiscmt = Comment.objects.get(uid=icmt)
+                ic = thiscmt.id
             except: ic = -9
             try:
                 lastcmt = Comment.objects.latest('pk')
@@ -116,8 +112,8 @@ class LiveApiView(View):
 
             lcmt = []
             if imax > 0:
-                if ic > 0:
-                    print('ic > 0:')
+                if ic > 0 and (t - int(thiscmt.recieved_time.timestamp())) < 60:
+                    print('ic > 0 and diff(t) < 60:')
                     if ic < imax:
                         cmt = Comment.objects.filter(id__gt = ic)[:LiveApiView.MAX_CMT_NUM]
                         for m in cmt:
@@ -127,7 +123,7 @@ class LiveApiView(View):
                         data['icmt'] = cmt[len(cmt)-1].uid
                     else: data['icmt'] = lastcmt.uid
                 else:
-                    print('ic <= 0:')
+                    print('ic <= 0 or diff(t) > 60:')
                     cmt = Comment.objects.order_by('-id')[:3][::-1]
                     for m in cmt:
                         print(m.id, m.body)
