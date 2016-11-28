@@ -9,11 +9,12 @@ from time import time
 import subprocess
 import json
 import random
+import os
 TOTAL_VIEW = 0
 TIME_STEP = 60
 REALTIME_VIEW = 0
 CURRENT_TIME = int(time())
-ID = random.randint(1, 65536)
+ID = os.getpid()
 
 class JSONResponse(HttpResponse):
     """
