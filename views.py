@@ -112,9 +112,9 @@ class LiveApiView(View):
 
             lcmt = []
             if imax > 0:
-                if ic > 0 and (t - int(thiscmt.recieved_time.timestamp())) < 60:
+                if ic > 0:
                     print('ic > 0 and diff(t) < 60:')
-                    if ic < imax:
+                    if ic < imax and (t - int(thiscmt.recieved_time.timestamp())) < 60:
                         cmt = Comment.objects.filter(id__gt = ic)[:LiveApiView.MAX_CMT_NUM]
                         for m in cmt:
                             print(m.id, m.body)
