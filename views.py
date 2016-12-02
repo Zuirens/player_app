@@ -37,7 +37,7 @@ class LoginView(View):
                 verified = request.POST.get('verified') == 'true'
                 pic = request.POST.get('pic')
                 user = FbAuthenUser(username=uid, nick_name=nick_name, picture=pic, verified=verified, link=link)
-                print(user)
+                # print(user)
                 try:
                     user.full_clean()
                     user.save()
@@ -78,7 +78,7 @@ class LiveApiView(View):
     # we use get method to handle request for comments
     def get(self, request):
         global CURRENT_TIME, REALTIME_VIEW, TOTAL_VIEW
-        print('-------------------' + str(ID) + '-------------------')
+        # print('-------------------' + str(ID) + '-------------------')
         t = int(time())
         if (t - CURRENT_TIME) > TIME_STEP:
             record = StreamStatistic(realtime_viewer=REALTIME_VIEW, total_viewer=TOTAL_VIEW)
@@ -107,26 +107,26 @@ class LiveApiView(View):
                 imax = lastcmt.id
             except:
                 imax = 0
-            print('* * * * * * * * * * * * * * * * * * * * *')
-            print(ic, imax)
+            # print('* * * * * * * * * * * * * * * * * * * * *')
+            # print(ic, imax)
 
             lcmt = []
             if imax > 0:
                 if ic > 0:
-                    print('ic > 0 and diff(t) < 60:')
+                    # print('ic > 0 and diff(t) < 60:')
                     if ic < imax and (t - int(thiscmt.recieved_time.timestamp())) < 60:
                         cmt = Comment.objects.filter(id__gt = ic)[:LiveApiView.MAX_CMT_NUM]
                         for m in cmt:
-                            print(m.id, m.body)
+                            # print(m.id, m.body)
                             lcmt.append(self.parseCmt(m))
                         data['lcmt'] = lcmt
                         data['icmt'] = cmt[len(cmt)-1].uid
                     else: data['icmt'] = lastcmt.uid
                 else:
-                    print('ic <= 0 or diff(t) > 60:')
+                    # print('ic <= 0 or diff(t) > 60:')
                     cmt = Comment.objects.order_by('-id')[:3][::-1]
                     for m in cmt:
-                        print(m.id, m.body)
+                        # print(m.id, m.body)
                         lcmt.append(self.parseCmt(m))
                     data['lcmt'] = lcmt
                     data['icmt'] = cmt[len(cmt) - 1].uid
