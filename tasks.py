@@ -1,3 +1,5 @@
+import django
+django.setup()
 from uwsgidecorators import *
 from .models import StreamStatistic
 import os
@@ -6,11 +8,12 @@ TOTAL_USER = {}
 REAL_USER = {}
 
 @spool
-def record_user(**kwargs):
+def record_user(args):
     global TOTAL_USER, REAL_USER
     print('-----record_user-----')
-    if 'user' in kwargs:
-        ip = str(kwargs['user'])
+    print(repr(args))
+    if 'user' in args:
+        ip = str(args['user'])
         if not ip in TOTAL_USER: TOTAL_USER[ip] = 1
         else: TOTAL_USER[ip] += 1
 
@@ -21,6 +24,7 @@ def record_user(**kwargs):
 
 @timer(30, target='spooler')
 def dump_record(args):
+    if len(REAL_USER) <= 0: return
     global REAL_USER
     record = StreamStatistic(realtime_viewer=len(REAL_USER), total_viewer=len(TOTAL_USER))
     print('-----foo-----')
