@@ -10,6 +10,7 @@ import subprocess
 import json
 import random
 import os
+from .tasks import *
 TOTAL_VIEW = 0
 TIME_STEP = 60
 REALTIME_VIEW = 0
@@ -77,25 +78,26 @@ class LiveApiView(View):
 
     # we use get method to handle request for comments
     def get(self, request):
-        global CURRENT_TIME, REALTIME_VIEW, TOTAL_VIEW
-        # print('-------------------' + str(ID) + '-------------------')
+        # global CURRENT_TIME, REALTIME_VIEW, TOTAL_VIEW
         t = int(time())
-        if (t - CURRENT_TIME) > TIME_STEP:
-            record = StreamStatistic(realtime_viewer=REALTIME_VIEW, total_viewer=TOTAL_VIEW)
-            try:
-                if random.random() <= 0.25:
-                    record.clean()
-                    record.save()
-            except Exception as e:
-                print(e)
-            CURRENT_TIME = t
-            REALTIME_VIEW = 0
+        # if (t - CURRENT_TIME) > TIME_STEP:
+        #     record = StreamStatistic(realtime_viewer=REALTIME_VIEW, total_viewer=TOTAL_VIEW)
+        #     try:
+        #         if random.random() <= 0.25:
+        #             record.clean()
+        #             record.save()
+        #     except Exception as e:
+        #         print(e)
+        #     CURRENT_TIME = t
+        #     REALTIME_VIEW = 0
+        # print('IP:', request.META['REMOTE_ADDR'])
         if request.is_ajax():
-            d = {}
-            for k, v in request.META.items():
-                if type(v) == str or type(v) == int: d[k] = v
-                else: d[k] = repr(v)
+            # d = {}
+            # for k, v in request.META.items():
+            #     if type(v) == str or type(v) == int: d[k] = v
+            #     else: d[k] = repr(v)
             data = {}
+            record_user.spool(user = request.META['REMOTE_ADDR'])
             icmt = request.GET.get('icmt', '-1')
             thiscmt = None
             try:
@@ -107,8 +109,6 @@ class LiveApiView(View):
                 imax = lastcmt.id
             except:
                 imax = 0
-            # print('* * * * * * * * * * * * * * * * * * * * *')
-            # print(ic, imax)
 
             lcmt = []
             if imax > 0:
@@ -135,10 +135,11 @@ class LiveApiView(View):
             try:
                 meta = ControlMeta.objects.latest('pk')
                 data['st'] = meta.is_start
-                data['rv'], data['tv'] = int(REALTIME_VIEW * meta.viewer_scaler), int(TOTAL_VIEW + meta.viewer_offset)
+                viewer = StreamStatistic.objects.latest('pk')
+                data['rv'], data['tv'] = int(viewer.realtime_viewer * meta.viewer_scaler), int(viewer.total_viewer + meta.viewer_offset)
             except:
                 data['st'] = False
-                data['rv'], data['tv'] = REALTIME_VIEW, TOTAL_VIEW
+                data['rv'], data['tv'] = 0, 0
             data['ec'] = 0
             return JSONResponse(data)
         else: return JSONResponse({'ec': 1})
@@ -164,9 +165,9 @@ class LiveApiView(View):
 
 @ensure_csrf_cookie
 def index(request):
-    global TOTAL_VIEW, REALTIME_VIEW
-    TOTAL_VIEW += 1
-    REALTIME_VIEW += 1
+    # global TOTAL_VIEW, REALTIME_VIEW
+    # TOTAL_VIEW += 1
+    # REALTIME_VIEW += 1
 
     try:
         cm = ControlMeta.objects.latest('pk')
