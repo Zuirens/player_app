@@ -25,8 +25,9 @@ class FbAuthenUser(AbstractBaseUser):
     #     primary_key=True,
     # )
     def pic_thumb(self):
-        return '<img src="%s" height="100" />' % (self.picture)
-
+        return '<img src="%s" height="50" />' % (self.picture)
+    pic_thumb.allow_tags = True
+    pic_thumb.short_description = 'Image'
     def __str__(self):
         return '{}'.format(self.username)
 

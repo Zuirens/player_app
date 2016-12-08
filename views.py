@@ -3,20 +3,21 @@ from django.contrib.auth import authenticate, login
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.views import View
+from django.views.decorators.csrf import ensure_csrf_cookie
 from .models import ControlMeta, Comment, FbAuthenUser, StreamStatistic
-from django.contrib.auth.models import User
 from time import time
-from django.db.models import Max
-import base64
-import re
+import subprocess
 import json
-
-
+import random
+import os
+import django.conf
+if not django.conf.settings.DEBUG:
+    from .tasks import *
 TOTAL_VIEW = 0
-TIME_STEP = 10
+TIME_STEP = 60
 REALTIME_VIEW = 0
 CURRENT_TIME = int(time())
-
+ID = os.getpid()
 
 class JSONResponse(HttpResponse):
     """
@@ -39,7 +40,7 @@ class LoginView(View):
                 verified = request.POST.get('verified') == 'true'
                 pic = request.POST.get('pic')
                 user = FbAuthenUser(username=uid, nick_name=nick_name, picture=pic, verified=verified, link=link)
-                print(user)
+                # print(user)
                 try:
                     user.full_clean()
                     user.save()
@@ -79,22 +80,32 @@ class LiveApiView(View):
 
     # we use get method to handle request for comments
     def get(self, request):
-        global CURRENT_TIME, REALTIME_VIEW, TOTAL_VIEW
+        # global CURRENT_TIME, REALTIME_VIEW, TOTAL_VIEW
         t = int(time())
-        if (t - CURRENT_TIME) > TIME_STEP:
-            print('!!!!!')
-            record = StreamStatistic(realtime_viewer=REALTIME_VIEW, total_viewer=TOTAL_VIEW)
-            try:
-                record.clean()
-                record.save()
-            except Exception as e:
-                print(e)
-            CURRENT_TIME = t
-            REALTIME_VIEW = 0
+        # if (t - CURRENT_TIME) > TIME_STEP:
+        #     record = StreamStatistic(realtime_viewer=REALTIME_VIEW, total_viewer=TOTAL_VIEW)
+        #     try:
+        #         if random.random() <= 0.25:
+        #             record.clean()
+        #             record.save()
+        #     except Exception as e:
+        #         print(e)
+        #     CURRENT_TIME = t
+        #     REALTIME_VIEW = 0
+        # print('IP:', request.META['REMOTE_ADDR'])
         if request.is_ajax():
+            # d = {}
+            # for k, v in request.META.items():
+            #     if type(v) == str or type(v) == int: d[k] = v
+            #     else: d[k] = repr(v)
             data = {}
+            if not django.conf.settings.DEBUG:
+                record_user.spool(user = request.META['REMOTE_ADDR'])
             icmt = request.GET.get('icmt', '-1')
-            try: ic = Comment.objects.get(uid=icmt).id
+            thiscmt = None
+            try:
+                thiscmt = Comment.objects.get(uid=icmt)
+                ic = thiscmt.id
             except: ic = -9
             try:
                 lastcmt = Comment.objects.latest('pk')
@@ -105,28 +116,33 @@ class LiveApiView(View):
             lcmt = []
             if imax > 0:
                 if ic > 0:
-                    if ic < imax:
+                    # print('ic > 0 and diff(t) < 60:')
+                    if ic < imax and (t - int(thiscmt.recieved_time.timestamp())) < 60:
                         cmt = Comment.objects.filter(id__gt = ic)[:LiveApiView.MAX_CMT_NUM]
                         for m in cmt:
+                            # print(m.id, m.body)
                             lcmt.append(self.parseCmt(m))
                         data['lcmt'] = lcmt
                         data['icmt'] = cmt[len(cmt)-1].uid
                     else: data['icmt'] = lastcmt.uid
                 else:
-                    cmt = Comment.objects.order_by('-id')[:LiveApiView.MAX_CMT_NUM].reverse()
+                    # print('ic <= 0 or diff(t) > 60:')
+                    cmt = Comment.objects.order_by('-id')[:3][::-1]
                     for m in cmt:
+                        # print(m.id, m.body)
                         lcmt.append(self.parseCmt(m))
                     data['lcmt'] = lcmt
                     data['icmt'] = cmt[len(cmt) - 1].uid
             data['tstp'] = int(time())
 
             try:
-                meta = ControlMeta.objects.get(pk = 1)
+                meta = ControlMeta.objects.latest('pk')
                 data['st'] = meta.is_start
-                data['rv'], data['tv'] = int(REALTIME_VIEW * meta.viewer_scaler + meta.viewer_offset), int(TOTAL_VIEW * meta.viewer_scaler + meta.viewer_offset)
+                viewer = StreamStatistic.objects.latest('pk')
+                data['rv'], data['tv'] = int(viewer.realtime_viewer * meta.viewer_scaler), int(viewer.total_viewer + meta.viewer_offset)
             except:
                 data['st'] = False
-                data['rv'], data['tv'] = REALTIME_VIEW, TOTAL_VIEW
+                data['rv'], data['tv'] = 0, 0
             data['ec'] = 0
             return JSONResponse(data)
         else: return JSONResponse({'ec': 1})
@@ -150,14 +166,14 @@ class LiveApiView(View):
 
 
 
-
+@ensure_csrf_cookie
 def index(request):
-    global TOTAL_VIEW, REALTIME_VIEW
-    TOTAL_VIEW += 1
-    REALTIME_VIEW += 1
+    # global TOTAL_VIEW, REALTIME_VIEW
+    # TOTAL_VIEW += 1
+    # REALTIME_VIEW += 1
 
     try:
-        cm = ControlMeta.objects.get(pk = 1)
+        cm = ControlMeta.objects.latest('pk')
     except: pass
 
     return render(request, 'index.html', locals())

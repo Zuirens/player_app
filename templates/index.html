@@ -1,0 +1,150 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+
+<html lang="en-US">
+
+<head>
+    <meta name="viewport" content="initial-scale=1.0,width=device-width,maximum-scale=1"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta name="description" content="ZUIRENS LIVING MOMENT">
+    <!--PAGE TITLE-->
+    <title>Zuirens Live</title>
+    <!--You can use open graph tags to customize link previews-->
+    <meta property="og:url" content="http://live.zuirens.com"/>
+    <meta property="og:type" content="website"/>
+    <meta property="og:title" content="Zuirens Live"/>
+    <meta property="og:description" content="ZUIRENS LIVING MOMENT"/>
+    <meta property="og:image" content="{% static "images/Zuirens_live_01.jpg" %}"/>
+
+<!--GOOGLE FONT CSS-->
+<link rel='stylesheet' href='http://fonts.googleapis.com/css?family=Open+Sans:300,400,600' type='text/css' media='all'/>
+<link rel='stylesheet' href='http://fonts.googleapis.com/css?family=Six+Caps' type='text/css' media='all'/>
+<!--LOCAL CSS-->
+<link rel='stylesheet' href="{% static "css/style.css" %}">
+<link rel='stylesheet' href="{% static "css/respond.css" %}">
+<link rel='stylesheet' href="{% static "font-awesome-4.3.0/css/font-awesome.min.css" %}">
+</head>
+
+<body class="home page">
+<script src="http://connect.facebook.net/zh_TW/all.js"></script>
+<div id="contentContainer">
+    <!--LOGO-->
+    <a id="logo" href="/"><img src="{% static "images/logo.png" %}" alt="Zuirens Live"/></a>
+    <!--end logo-->
+
+    <!--Live title-->
+
+    <div id="live-title">
+      <h2>中文測試<br><strong>XXX Party</strong></h2>
+      <h3>live測試</h3>
+      <h4 class="subhead">
+      <a href="#">女人國雌雄同體派對的 神秘的真我愛慾</a></h4>
+    </div>
+
+    <div id="fblike">
+         <div class="fb-like" data-href="https://live.zuirens.com" data-layout="button_count" data-action="recommend" data-size="small" data-show-faces="true" data-share="true"></div>
+    </div>
+
+{#     <div id="menu-control"><span></span></div> #}
+
+    <!--REVIEWS-->
+    <div id="reviews">
+        <div class="review">
+            <div class="reviewTitle">
+            </div>
+        </div>
+        <!--end review-->
+    </div>
+    <!--end reviews-->
+    <!--VIDEO-->
+    <div class="dplayer" id="dplayer3"></div>
+    <!--LOADING ANIMATION-->
+    <div id="loading-page"></div>
+    <!--CONTENT COVER-->
+    <div id="contentCover"></div>
+</div>
+<!--end contentContainer-->
+<div id="footerContainer">
+    <div id="footer">
+        <!--CREDITS-->
+        <div id="zs-credits">
+
+        </div>
+
+        <div id="footerMenuContainer" class="menu-footer-container">
+            <ul id="footerMenu" class="menu">
+                 <li class="online" id="rv"><i class="fa fa-circle" aria-hidden="true"></i><span></span></li>
+                 <li id="tv"><i class="fa fa-eye" aria-hidden="true"></i><span></span></li>
+            </ul>
+        </div>
+        <!--COPYRIGHT NOTICE-->
+        <div id="copyright">&copy; 2016 Zuirens Live. by <a target="_blank" href="http://www.facebook.com/zuirens">Zuirens</a>
+        </div>
+    </div>
+    <!--end footer-->
+</div>
+<!--end footerContainer-->
+<!--JavaScript-->
+<script type='text/javascript' src="{% static "scripts/jquery.js" %}"></script>
+<script type='text/javascript' src="{% static "scripts/DPlayer.js" %}"></script>
+<script type="text/javascript" src="{% static "src/app.js" %}"></script>
+<script type='text/javascript' src="{% static "plugin/hls.min.js" %}"></script>
+<script type='text/javascript' src="{% static "scripts/spin.js" %}"></script>
+<script type='text/javascript' src="{% static "scripts/custom.js" %}"></script>
+<script type='text/javascript' src="{% static "scripts/retina.js" %}"></script>
+
+
+<script>
+    // Live Video (HTTP Live Streaming, M3U8 format) support
+    (function () {
+        var tmp = '{{ cm.is_start|yesno }}',
+            st = tmp == 'yes' || tmp == 'True',
+            id =  '{{ user.username }}',
+            dp3 = new DPlayer({
+                element: document.getElementById('dplayer3'),
+                autoplay: true,
+                theme: '#FADFA3',
+                loop: true,
+                lang: 'zh',
+                screenshot: false,
+                hotkey: true,
+                video: {
+                    url: st ? '{{ cm.stream_source }}' : '',
+                    pic: '{{ cm.thumbnail }}'
+                },
+                danmaku: {
+                    id: id,
+                    api: '/api/'
+                }
+            });
+            if(!st) { dp3.pause(); }
+            // console.log('id:' + id); -------------
+            liveApp.init(id, st);
+
+    })();
+</script>
+
+<script>
+    (function (i, s, o, g, r, a, m) {
+        i['GoogleAnalyticsObject'] = r;
+        i[r] = i[r] || function () {
+                    (i[r].q = i[r].q || []).push(arguments)
+                }, i[r].l = 1 * new Date();
+        a = s.createElement(o),
+                m = s.getElementsByTagName(o)[0];
+        a.async = 1;
+        a.src = g;
+        m.parentNode.insertBefore(a, m)
+    })(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+
+    ga('create', 'UA-1718206-52', 'auto');
+    ga('send', 'pageview');
+
+</script>
+
+<div id="fb-root"></div>
+
+
+</body>
+
+</html>
