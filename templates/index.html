@@ -35,7 +35,10 @@
     <!--Live title-->
 
     <div id="live-title">
+    {% if not cm.is_start %}
       {{ cm.body|safe }}
+
+    {% endif %}
     </div>
 
     <div id="fblike">

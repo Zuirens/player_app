@@ -22,7 +22,7 @@ def record_user(args):
     print('---------------------')
 
 
-@timer(30, target='spooler')
+@timer(60, target='spooler')
 def dump_record(args):
     global REAL_USER
     if len(REAL_USER) <= 0: return
