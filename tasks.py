@@ -24,8 +24,8 @@ def record_user(args):
 
 @timer(30, target='spooler')
 def dump_record(args):
-    if len(REAL_USER) <= 0: return
     global REAL_USER
+    if len(REAL_USER) <= 0: return
     record = StreamStatistic(realtime_viewer=len(REAL_USER), total_viewer=len(TOTAL_USER))
     print('-----foo-----')
     try:
