@@ -10,7 +10,9 @@ import subprocess
 import json
 import random
 import os
-from .tasks import *
+import django.conf
+if not django.conf.settings.DEBUG:
+    from .tasks import *
 TOTAL_VIEW = 0
 TIME_STEP = 60
 REALTIME_VIEW = 0
@@ -97,7 +99,8 @@ class LiveApiView(View):
             #     if type(v) == str or type(v) == int: d[k] = v
             #     else: d[k] = repr(v)
             data = {}
-            record_user.spool(user = request.META['REMOTE_ADDR'])
+            if not django.conf.settings.DEBUG:
+                record_user.spool(user = request.META['REMOTE_ADDR'])
             icmt = request.GET.get('icmt', '-1')
             thiscmt = None
             try:
