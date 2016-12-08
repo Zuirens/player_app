@@ -70,6 +70,10 @@ var liveApp = (function () {
                         if (data['st']) {
                             document.location.href = "/";
                         }
+                    } else {
+                        if (!data['st']) {
+                            document.location.href = "/";
+                        }
                     }
                     globalStart = data['st'];
                     if (globalStart) {

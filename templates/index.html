@@ -6,15 +6,15 @@
 <head>
     <meta name="viewport" content="initial-scale=1.0,width=device-width,maximum-scale=1"/>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-    <meta name="description" content="ZUIRENS LIVING MOMENT">
+    <meta name="description" content="{{ cm.description }}">
     <!--PAGE TITLE-->
-    <title>Zuirens Live</title>
+    <title>{{ cm.title }}</title>
     <!--You can use open graph tags to customize link previews-->
     <meta property="og:url" content="http://live.zuirens.com"/>
     <meta property="og:type" content="website"/>
-    <meta property="og:title" content="Zuirens Live"/>
-    <meta property="og:description" content="ZUIRENS LIVING MOMENT"/>
-    <meta property="og:image" content="{% static "images/Zuirens_live_01.jpg" %}"/>
+    <meta property="og:title" content="{{ cm.title }}"/>
+    <meta property="og:description" content="{{ cm.description }}"/>
+    <meta property="og:image" content="{{ cm.background }}"/>
 
 <!--GOOGLE FONT CSS-->
 <link rel='stylesheet' href='http://fonts.googleapis.com/css?family=Open+Sans:300,400,600' type='text/css' media='all'/>
@@ -35,10 +35,7 @@
     <!--Live title-->
 
     <div id="live-title">
-      <h2>中文測試<br><strong>XXX Party</strong></h2>
-      <h3>live測試</h3>
-      <h4 class="subhead">
-      <a href="#">女人國雌雄同體派對的 神秘的真我愛慾</a></h4>
+      {{ cm.body|safe }}
     </div>
 
     <div id="fblike">
@@ -110,7 +107,7 @@
                 hotkey: true,
                 video: {
                     url: st ? '{{ cm.stream_source }}' : '',
-                    pic: '{{ cm.thumbnail }}'
+                    pic: '{{ cm.background }}'
                 },
                 danmaku: {
                     id: id,
