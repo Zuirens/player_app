@@ -1247,9 +1247,9 @@ body.mobile-device #audioControl {
     background: rgba(0, 0, 0, 0.3);
     color: rgba(255, 255, 255, 0.5);
     margin: 8px 0;
-    font-size: 16px;
+    font-size: 18px;
     text-align: left;
-    line-height: 1.8;
+    line-height: 2;
     margin-left: 35px;
     position: relative;
     text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
@@ -1257,7 +1257,7 @@ body.mobile-device #audioControl {
 .chat:before {
     content: '';
     position: absolute;
-    bottom: -6px;
+    bottom: 4px;
     border-top: 6px solid rgba(0, 0, 0, 0.3);
     left: 0;
     border-right: 7px solid transparent;
@@ -1270,7 +1270,7 @@ a.user {
     color: #333;*/
     position: absolute;
     z-index: 1;
-    bottom: -15px;
+    bottom: -5px;
     left: -35px;
     border-radius: 30px;
     width: 30px;
@@ -1296,11 +1296,8 @@ a.user img {
     margin: -20px 0 0 10px;
     font-size: 14px;
     color: #a6a6a6;*/
-    position: absolute;
-    bottom: -18px;
+    bottom: -15px;
     font-size: 12px;
-    float: left;
-    width: 100%;
     color: rgba(255, 255, 255, 0.3);
 }
 
@@ -1316,9 +1313,9 @@ a.user img {
     background-color: #a6a6a6;
     border-radius: 3px;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
-}
+}*/
 
-.message:before {
+/*.message:before {
     margin: -9px 0 0 -16px;
     left: 0;
     content: '';
