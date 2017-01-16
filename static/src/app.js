@@ -19,7 +19,13 @@ var liveApp = (function () {
             if (lcmt.length > 0) {
                 cmtbox.fadeOut(1000, function () {
                     var cmt = lcmt.shift(), au = cmt['au'];
-                    cmtbox.html("\<blockquote\>" + cmt['body'] + "\<cite\>\<a href=\"" + au['link'] + "\"\>" + au['name'] + "\<\/a\>\<\/cite\> \<\/blockquote\>").fadeIn(1000);
+                    var tmpl =
+                        '\<div class="chat"\>'
+                      + '\<a class="user" href=\"' + au['link'] + '\"\>'
+                      + '<img alt="" src=\"' + au['pic'] + '\"\>\<\/a\>'
+                      + '<div class="idname">' + au['name'] + '\<\/div\>'
+                      + '\<div class=\"message\"\>' + cmt['body'] + '\<\/div\>';
+                    cmtbox.html(tmpl).fadeIn(1000);
                 });
 
                 if (lcmt.length > 0) {

@@ -68,6 +68,7 @@ class LiveApiView(View):
         au['link'] = au_model.link
         au['isb'] = au_model.is_blacklist
         au['name'] = au_model.nick_name
+        au['pic'] = au_model.picture
         # au['exd'] = re.sub(r'[\n\r\s]+', r'', au_model.extra_data)
 
         msg['body'] = msg_model.body

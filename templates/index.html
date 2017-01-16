@@ -16,13 +16,14 @@
     <meta property="og:description" content="{{ cm.description }}"/>
     <meta property="og:image" content="http://live.zuirens.com{{ cm.background }}"/>
 
-<!--GOOGLE FONT CSS-->
-<link rel='stylesheet' href='http://fonts.googleapis.com/css?family=Open+Sans:300,400,600' type='text/css' media='all'/>
-<link rel='stylesheet' href='http://fonts.googleapis.com/css?family=Six+Caps' type='text/css' media='all'/>
-<!--LOCAL CSS-->
-<link rel='stylesheet' href="{% static "css/style.css" %}">
-<link rel='stylesheet' href="{% static "css/respond.css" %}">
-<link rel='stylesheet' href="{% static "font-awesome-4.3.0/css/font-awesome.min.css" %}">
+    <!--GOOGLE FONT CSS-->
+    <link rel='stylesheet' href='http://fonts.googleapis.com/css?family=Open+Sans:300,400,600' type='text/css'
+          media='all'/>
+    <link rel='stylesheet' href='http://fonts.googleapis.com/css?family=Six+Caps' type='text/css' media='all'/>
+    <!--LOCAL CSS-->
+    <link rel='stylesheet' href="{% static "css/style.css" %}">
+    <link rel='stylesheet' href="{% static "css/respond.css" %}">
+    <link rel='stylesheet' href="{% static "font-awesome-4.3.0/css/font-awesome.min.css" %}">
 </head>
 
 <body class="home page">
@@ -36,37 +37,28 @@
 
     <div id="live-title">
 
-    {% if not cm.is_start %}
-      {{ cm.body|safe }}
+        {% if not cm.is_start %}
+            {{ cm.body|safe }}
 
-    {% endif %}
+        {% endif %}
     </div>
 
     <div id="fblike">
-         <div class="fb-like" data-href="https://live.zuirens.com" data-layout="button_count" data-action="recommend" data-size="small" data-show-faces="true" data-share="true"></div>
+        <div class="fb-like" data-href="https://live.zuirens.com" data-layout="button_count" data-action="recommend"
+             data-size="small" data-show-faces="true" data-share="true"></div>
     </div>
 
-{#     <div id="menu-control"><span></span></div> #}
+    {#     <div id="menu-control"><span></span></div> #}
 
     <!--REVIEWS-->
     <div id="reviews">
         <div class="review">
             <div class="reviewTitle">
 
-              <div class="chat">
-                <a class="user" href="#">
-                  <img alt="" src="https://s3.amazonaws.com/uifaces/faces/twitter/igorgarybaldi/128.jpg"></a>
-                <div class="idname">
-                  Andy Lin
-                </div>
-                <div class="message">
-                  好帥好酷好棒棒好酷好酷好酷好好酷好酷
+                <!--end review-->
             </div>
         </div>
-        <!--end review-->
     </div>
-  </div>
-</div>
     <!--end reviews-->
     <!--VIDEO-->
     <div class="dplayer" id="dplayer3"></div>
@@ -85,8 +77,8 @@
 
         <div id="footerMenuContainer" class="menu-footer-container">
             <ul id="footerMenu" class="menu">
-                 <li class="online" id="rv"><i class="fa fa-circle" aria-hidden="true"></i><span></span></li>
-                 <li id="tv"><i class="fa fa-eye" aria-hidden="true"></i><span></span></li>
+                <li class="online" id="rv"><i class="fa fa-circle" aria-hidden="true"></i><span></span></li>
+                <li id="tv"><i class="fa fa-eye" aria-hidden="true"></i><span></span></li>
             </ul>
         </div>
         <!--COPYRIGHT NOTICE-->
@@ -110,28 +102,30 @@
     // Live Video (HTTP Live Streaming, M3U8 format) support
     (function () {
         var tmp = '{{ cm.is_start|yesno }}',
-            st = tmp == 'yes' || tmp == 'True',
-            id =  '{{ user.username }}',
-            dp3 = new DPlayer({
-                element: document.getElementById('dplayer3'),
-                autoplay: true,
-                theme: '#FADFA3',
-                loop: true,
-                lang: 'zh',
-                screenshot: false,
-                hotkey: true,
-                video: {
-                    url: st ? '{{ cm.stream_source }}' : '',
-                    pic: '{{ cm.background }}'
-                },
-                danmaku: {
-                    id: id,
-                    api: '/api/'
-                }
-            });
-            if(!st) { dp3.pause(); }
-            // console.log('id:' + id); -------------
-            liveApp.init(id, st);
+                st = tmp == 'yes' || tmp == 'True',
+                id = '{{ user.username }}',
+                dp3 = new DPlayer({
+                    element: document.getElementById('dplayer3'),
+                    autoplay: true,
+                    theme: '#FADFA3',
+                    loop: true,
+                    lang: 'zh',
+                    screenshot: false,
+                    hotkey: true,
+                    video: {
+                        url: st ? '{{ cm.stream_source }}' : '',
+                        pic: '{{ cm.background }}'
+                    },
+                    danmaku: {
+                        id: id,
+                        api: '/api/'
+                    }
+                });
+        if (!st) {
+            dp3.pause();
+        }
+        // console.log('id:' + id); -------------
+        liveApp.init(id, st);
 
     })();
 </script>
