@@ -21,10 +21,17 @@ var liveApp = (function () {
                     var cmt = lcmt.shift(), au = cmt['au'];
                     var tmpl =
                         '\<div class="chat"\>'
-                      + '\<a class="user" href=\"' + au['link'] + '\"\>'
-                      + '<img alt="" src=\"' + au['pic'] + '\"\>\<\/a\>'
-                      + '<div class="idname">' + au['name'] + '\<\/div\>'
-                      + '\<div class=\"message\"\>' + cmt['body'] + '\<\/div\>';
+                      + '\<a class="user" href="' + au['link'] + '"\>'
+                      + '\<img alt="" src="' + au['pic'] + '"\>\<\/a\>'
+                      + cmt['body']
+                      + '\<div class="idname"\>' + au['name'] + '\<\/div\>'
+                      + '\<\/div\>';
+                    // var tmpl =
+                    //     '\<div class="chat"\>'
+                    //   + '\<a class="user" href=\"' + au['link'] + '\"\>'
+                    //   + '<img alt="" src=\"' + au['pic'] + '\"\>\<\/a\>'
+                    //   + '<div class="idname">' + au['name'] + '\<\/div\>'
+                    //   + '\<div class=\"message\"\>' + cmt['body'] + '\<\/div\>';
                     cmtbox.html(tmpl).fadeIn(1000);
                 });
 
