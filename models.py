@@ -70,12 +70,17 @@ class StreamStatistic(models.Model):
         verbose_name_plural = verbose_name
 
 class ControlMeta(models.Model):
-    source_name = models.CharField(max_length=31)
-    stream_source = models.CharField(max_length=1023)
-    thumbnail = models.CharField(max_length=1023)
+    name = models.CharField(max_length=31)
+    stream_source = models.CharField(max_length=1023, blank=True)
+    background = models.CharField(max_length=1023, blank=True)
+    title = models.CharField(default="Zuirens Live", max_length=255, blank=True)
+    subtitle = models.CharField(max_length=255, blank=True)
+    description = models.CharField(default="ZUIRENS LIVING MOMENT", max_length=255, blank=True)
+    body = models.CharField(max_length=1023, blank=True)
+    footer = models.CharField(max_length=255, blank=True)
     viewer_scaler = models.FloatField(default = 1.0)
     viewer_offset = models.FloatField(default = 0.0)
-    start_time = models.DateTimeField(auto_now=True)
+    start_time = models.DateTimeField(default = timezone.now)
     is_start = models.BooleanField(default = False)
 
     class Meta:

@@ -138,10 +138,12 @@ class LiveApiView(View):
             try:
                 meta = ControlMeta.objects.latest('pk')
                 data['st'] = meta.is_start
+            except:
+                data['st'] = False
+            try:
                 viewer = StreamStatistic.objects.latest('pk')
                 data['rv'], data['tv'] = int(viewer.realtime_viewer * meta.viewer_scaler), int(viewer.total_viewer + meta.viewer_offset)
             except:
-                data['st'] = False
                 data['rv'], data['tv'] = 0, 0
             data['ec'] = 0
             return JSONResponse(data)
