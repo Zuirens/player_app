@@ -1238,33 +1238,70 @@ body.mobile-device #audioControl {
 }
 
 .chat {
-    margin: 45px 0 0 0;
-    font-weight: 300;
+    /*margin: 45px 0 0 0;
+    font-weight: 300;*/
+    clear: both;
+    float: left;
+    padding: 6px 10px 7px;
+    border-radius: 10px 10px 10px 0;
+    background: rgba(0, 0, 0, 0.3);
+    margin: 8px 0;
+    font-size: 16px;
+    text-align: left;
+    line-height: 1.8;
+    margin-left: 35px;
+    position: relative;
+    text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
+}
+.chat:before {
+    content: '';
+    position: absolute;
+    bottom: -6px;
+    border-top: 6px solid rgba(0, 0, 0, 0.3);
+    left: 0;
+    border-right: 7px solid transparent;
 }
 
 a.user {
-    float: left;
+    /*float: left;
     margin: -30px 0 0 0;
     display: block;
-    color: #333;
+    color: #333;*/
+    position: absolute;
+    z-index: 1;
+    bottom: -15px;
+    left: -35px;
+    border-radius: 30px;
+    width: 30px;
+    height: 30px;
+    overflow: hidden;
+    margin: 0;
+    padding: 0;
+    border: 2px solid rgba(255, 255, 255, 0.24);
 }
 
 a.user img {
-    width: 65px;
+    /*width: 65px;
     height: 65px;
     border-radius: 50%;
     background-color: #f3f3f3;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);*/
+    width: 100%;
+    height: auto;
 }
 
 .idname {
-    float: left;
+    /*float: left;
     margin: -20px 0 0 10px;
     font-size: 14px;
-    color: #a6a6a6;
+    color: #a6a6a6;*/
+    position: absolute;
+    bottom: -15px;
+    font-size: 9px;
+    color: rgba(255, 255, 255, 0.3);
 }
 
-.message {
+/*.message {
     margin: 0 0 0 90px;
     display: block;
     padding: 10px;
@@ -1297,7 +1334,7 @@ a.user img {
     border-top: 17px solid #a6a6a6;
     border-left: 17px solid transparent;
     border-right: 17px solid transparent;
-}
+}*/
 
 
 /*-----------------------------*/
