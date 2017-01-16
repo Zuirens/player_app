@@ -33,6 +33,7 @@ class MessageAdmin(admin.ModelAdmin):
 class ControlMetaAdmin(admin.ModelAdmin):
     list_display = ('name', 'viewer_scaler', 'viewer_offset', 'start_time', 'is_start')
     list_editable = ('viewer_scaler', 'viewer_offset', 'is_start')
+    list_filter = ('name', 'is_start')
 
 
 class StreamStatisticAdmin(admin.ModelAdmin):
