@@ -3,6 +3,7 @@ from .models import Comment, ControlMeta, FbAuthenUser, StreamStatistic
 # Register your models here.
 
 
+
 class FbAuthenUserAdmin(admin.ModelAdmin):
     list_display = ('edit_link', 'nick_name', 'username', 'pic_thumb', 'is_blacklist')
     list_editable = ('is_blacklist',)
