@@ -14,8 +14,7 @@
     <meta property="og:type" content="website"/>
     <meta property="og:title" content="{{ cm.title }}"/>
     <meta property="og:description" content="{{ cm.description }}"/>
-    <meta property="og:image" content="http://live.zuirens.com{{ cm.background }}"/>
-
+    <meta property="og:image" content="{{ cm.background.url }}"/>
     <!--GOOGLE FONT CSS-->
     <link rel='stylesheet' href='http://fonts.googleapis.com/css?family=Open+Sans:300,400,600' type='text/css'
           media='all'/>
@@ -119,7 +118,7 @@
                     hotkey: true,
                     video: {
                         url: st ? '{{ cm.stream_source }}' : '',
-                        pic: '{{ cm.background }}'
+                        pic: '{{ cm.background.url }}'
                     },
                     danmaku: {
                         id: id,

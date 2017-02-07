@@ -19,6 +19,16 @@ class FbAuthenUser(AbstractBaseUser):
     is_blacklist = models.BooleanField(default=False)
     password = models.UUIDField(default=uuid.uuid4)
     USERNAME_FIELD = 'username'
+    is_superuser = models.IntegerField(default=False)
+    is_staff = models.IntegerField(default=False)
+
+    def has_perm(self, perm, obj=None):
+        return self.is_superuser
+
+    def has_module_perms(self, app_label):
+        return self.is_superuser
+
+
     # user = models.OneToOneField(
     #     User,
     #     on_delete=models.CASCADE,
