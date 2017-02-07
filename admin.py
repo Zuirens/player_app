@@ -22,7 +22,7 @@ class MessageAdmin(admin.ModelAdmin):
     list_display = ('uid', 'get_author', 'body', 'recieved_time', 'pub_count', 'is_blacklist')
     list_editable = ('is_blacklist',)
     search_fields = ('author__nick_name',)
-    list_filter = ('author__nick_name', 'body',)
+    # list_filter = ('author__nick_name', 'body',)
 
     def get_author(self, obj):
         return obj.author.nick_name
@@ -33,7 +33,7 @@ class MessageAdmin(admin.ModelAdmin):
 class ControlMetaAdmin(admin.ModelAdmin):
     list_display = ('name', 'viewer_scaler', 'viewer_offset', 'start_time', 'is_start')
     list_editable = ('viewer_scaler', 'viewer_offset', 'is_start')
-    list_filter = ('name', 'is_start')
+    # list_filter = ('name', 'is_start')
 
 
 class StreamStatisticAdmin(admin.ModelAdmin):
